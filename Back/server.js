@@ -8,6 +8,7 @@ const morgan = require("morgan");
 // Importar rotas
 const authRoutes = require('./routes/auth');
 const pedidosRoutes = require('./routes/pedidos');
+const adminRoutes = require('./routes/admin');
 const { rateLimit } = require('./middlewares/rateLimit');
 
 const app = express();
@@ -65,12 +66,21 @@ app.get("/portefolio", (req, res) => {
     res.sendFile(path.join(__dirname, "..", "Front", "portefolio.html"));
 });
 
+app.get("/admin-login", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "Front", "admin-login.html"));
+});
+
+app.get("/admin-panel", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "Front", "admin-panel.html"));
+});
+
 // ========================================
 // API ROUTES
 // ========================================
 
 app.use('/api', authRoutes);
 app.use('/api', pedidosRoutes);
+app.use('/api', adminRoutes);
 
 // ========================================
 // ROTA TESTE
