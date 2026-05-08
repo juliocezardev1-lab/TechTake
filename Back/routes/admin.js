@@ -70,11 +70,19 @@ router.post('/admin/login', [
 
         return res.json({ success: true, token, message: 'Login realizado com sucesso' });
     });
-    if (err) {
-        return res.status(500).json({ success: false, error: err.message });
-    }
-    res.json({ success: true, pacotes: rows || [] });
 });
+
+// ========================================
+// GET TODOS OS PACOTES
+// ========================================
+
+router.get('/pacotes', (req, res) => {
+    db.all('SELECT * FROM pacotes ORDER BY id', (err, rows) => {
+        if (err) {
+            return res.status(500).json({ success: false, error: err.message });
+        }
+        res.json({ success: true, pacotes: rows || [] });
+    });
 });
 
 // ========================================

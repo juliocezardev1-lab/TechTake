@@ -37,6 +37,31 @@
             align-items: center;
         }
 
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 13px;
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-separator {
+            color: rgba(255, 255, 255, 0.3);
+            margin: 0 5px;
+        }
+
         .btn-logout {
             background: #e74c3c;
             color: white;
@@ -333,6 +358,27 @@
                 flex-direction: column;
                 gap: 10px;
             }
+
+            .header-right {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                width: 100%;
+            }
+
+            .nav-menu a {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+
+            .btn-logout {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -344,6 +390,15 @@
             <p style="font-size: 12px; opacity: 0.9;">Gerenciar Pacotes e Serviços</p>
         </div>
         <div class="header-right">
+            <div class="nav-menu">
+                <a href="/home">🏠 Home</a>
+                <span class="nav-separator">|</span>
+                <a href="/servicos">📦 Serviços</a>
+                <span class="nav-separator">|</span>
+                <a href="/sobre">ℹ️ Sobre</a>
+                <span class="nav-separator">|</span>
+                <a href="/contato">📞 Contato</a>
+            </div>
             <button class="btn-logout" onclick="logout()">Sair</button>
         </div>
     </div>
@@ -352,8 +407,9 @@
         <div class="message" id="message"></div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('pacotes')">Pacotes de Serviços</button>
-            <button class="tab-btn" onclick="switchTab('drone')">Pacotes com Drone</button>
+            <button class="tab-btn active" data-tab="pacotes" onclick="switchTab('pacotes', this)">Pacotes de
+                Serviços</button>
+            <button class="tab-btn" data-tab="drone" onclick="switchTab('drone', this)">Pacotes com Drone</button>
         </div>
 
         <!-- ABA DE PACOTES -->
@@ -494,13 +550,13 @@
     <script>
         let currentPacoteId = null;
         let currentDroneId = null;
-        const API_URL = '/api';
+        const API_URL = 'http://localhost:3000/api';
 
         // ========================================
         // FUNÇÕES DE ABAS
         // ========================================
 
-        function switchTab(tabName) {
+        function switchTab(tabName, button) {
             // Esconder todas as abas
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -511,7 +567,9 @@
 
             // Mostrar aba selecionada
             document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
+            if (button) {
+                button.classList.add('active');
+            }
 
             // Carregar dados
             if (tabName === 'pacotes') {

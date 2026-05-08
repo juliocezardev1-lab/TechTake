@@ -47,7 +47,27 @@
 
 ═══════════════════════════════════════════════════════════════════════════════════
 
-🔐 CREDENCIAIS DE ADMIN:
+� LINKS DISPONÍVEIS (localhost):
+
+PÁGINAS PRINCIPAIS:
+   • Home: http://localhost:3000/home
+   • Serviços: http://localhost:3000/servicos
+   • Sobre: http://localhost:3000/sobre
+   • Contato: http://localhost:3000/contato
+   • Portfólio: http://localhost:3000/portefolio
+
+ADMIN:
+   • Login: http://localhost:3000/admin-login
+   • Painel: http://localhost:3000/admin-panel
+
+API (Backend):
+   • Lista de Pacotes: http://localhost:3000/api/pacotes
+   • Lista de Drones: http://localhost:3000/api/pacotes-drone
+   • Login do Admin: http://localhost:3000/api/admin/login (POST)
+
+═══════════════════════════════════════════════════════════════════════════════════
+
+�🔐 CREDENCIAIS DE ADMIN:
 
 Email:    admin@buxaaudiovisual.com
 Senha:    Admin@2024!Secure
