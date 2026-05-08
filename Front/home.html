@@ -658,7 +658,6 @@
 </head>
 
 <body>
-
     <!-- =============================================
        NAV
   ============================================= -->
@@ -669,6 +668,10 @@
             <li><a href="/portefolio">Portfólio</a></li>
             <li><a href="/sobre">Sobre</a></li>
             <li><a href="/contato">Contato</a></li>
+            <li id="navAuthItem"></li>
+            <li><button id="logoutBtn"
+                    style="display: none; background: none; border: none; color: var(--clr-text); cursor: pointer; font-family: var(--font-body); padding: 0.5rem 1rem;">Sair</button>
+            </li>
         </ul>
     </nav>
 
@@ -686,7 +689,7 @@
             <img src="IMG/Logo_Empresa.png" alt="TechTake" class="hero-logo" />
             <h1 class="hero-title">TechTake<br />Audiovisual</h1>
             <p class="hero-sub">Drone · Fotografia · Vídeo Profissional</p>
-            <a href="portefoleo.html" class="btn-primary">Ver Portfólio</a>
+            <a href="/portefolio" class="btn-primary">Ver Portfólio</a>
         </div>
 
         <div class="scroll-indicator">
@@ -832,15 +835,50 @@
        FOOTER
   ============================================= -->
     <footer>
-        <p>© 2026 TechTake Audiovisual — Todos os direitos reservados</p>
+        <p>© 2026 TechTake Audiovisual. Todos os direitos reservados. Reprodução total ou parcial proibida sem
+            autorização prévia.</p>
     </footer>
 
     <!-- =============================================
        SCRIPTS — parallax + reveal on scroll
   ============================================= -->
+    <script src="config.js"></script>
     <script>
+        protegerPagina();
+
         /* ── Navbar scroll ── */
         const navbar = document.getElementById('navbar');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const navAuthItem = document.getElementById('navAuthItem');
+
+        const updateAuthButtons = () => {
+            const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+            if (token) {
+                logoutBtn.style.display = 'inline-block';
+                logoutBtn.textContent = 'Sair';
+                if (navAuthItem) navAuthItem.innerHTML = '';
+            } else {
+                logoutBtn.style.display = 'none';
+                if (navAuthItem) {
+                    navAuthItem.innerHTML = `
+                        <a href="/login">Entrar</a>
+                        <span style="margin: 0 .35rem; color: rgba(255,255,255,.5);">|</span>
+                        <a href="/cadastro">Cadastrar</a>
+                    `;
+                }
+            }
+        };
+
+        logoutBtn.addEventListener('click', async () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuario');
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('usuario');
+            window.location.href = '/login';
+        });
+
+        updateAuthButtons();
+
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 60);
         });

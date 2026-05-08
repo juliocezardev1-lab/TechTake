@@ -403,12 +403,16 @@
 <body>
 
     <nav id="navbar">
-        <a href="home.html"><img src="IMG/Logo_Empresa.png" alt="TechTake Audiovisual" class="nav-logo" /></a>
+        <a href="/home"><img src="IMG/Logo_Empresa.png" alt="TechTake Audiovisual" class="nav-logo" /></a>
         <ul class="nav-links">
             <li><a href="/servicos" class="active">Serviços</a></li>
             <li><a href="/portefolio">Portfólio</a></li>
             <li><a href="/sobre">Sobre</a></li>
             <li><a href="/contato">Contato</a></li>
+            <li id="navAuthItem"></li>
+            <li><button id="logoutBtn"
+                    style="display: none; background: none; border: none; color: var(--clr-text); cursor: pointer; font-family: var(--font-body); padding: 0.5rem 1rem;">Sair</button>
+            </li>
         </ul>
     </nav>
 
@@ -758,15 +762,18 @@
         <h2 class="reveal">Pronto para começar?</h2>
         <!-- TEXTO DO CTA -->
         <p class="reveal">Conte-nos sobre seu projeto e montamos uma proposta sob medida.</p>
-        <a href="contato.html" class="btn-primary reveal">Solicitar Orçamento</a>
+        <a href="/contato" class="btn-primary reveal">Solicitar Orçamento</a>
     </div>
 
     <footer>
         <!-- TEXTO DO RODAPÉ -->
-        <p>© 2026 TechTake Audiovisual — Todos os direitos reservados</p>
+        <p>© 2026 TechTake Audiovisual. Todos os direitos reservados. Reprodução total ou parcial proibida sem
+            autorização prévia.</p>
     </footer>
 
+    <script src="config.js"></script>
     <script>
+        protegerPagina();
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 60));
 
