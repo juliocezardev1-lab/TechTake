@@ -19,8 +19,9 @@ const PORT = process.env.PORT || 3000;
 // ========================================
 
 app.use(helmet({ contentSecurityPolicy: false })); // Headers de segurança
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || (process.env.NODE_ENV === 'production' ? 'https://seu-dominio.com' : 'http://localhost:3000');
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : 'http://localhost:3000',
+    origin: FRONTEND_ORIGIN,
     credentials: true
 }));
 app.use(morgan("dev"));

@@ -2,7 +2,11 @@
 // CONFIG API
 // ========================================
 
-const API_BASE_URL = "http://localhost:3000";
+// Altere este valor para o host público quando o site estiver em produção.
+// Mantenha localhost para desenvolvimento local.
+const LOCAL_API_BASE_URL = "http://localhost:3000";
+const PROD_API_BASE_URL = "https://seu-dominio.com"; // <-- altere para seu host público
+const API_BASE_URL = window.location.hostname === "localhost" ? LOCAL_API_BASE_URL : PROD_API_BASE_URL;
 
 // ========================================
 // ENVIAR PEDIDO / ORÇAMENTO
