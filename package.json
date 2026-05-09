@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "install": "cd Back && npm install",
+    "postinstall": "cd Back && npm install",
     "start": "cd Back && npm start"
   },
   "engines": {

@@ -13,6 +13,9 @@ const { rateLimit } = require('./middlewares/rateLimit');
 
 const app = express();
 
+// Necessário para o Render (e outros proxies reversos) — permite ler o IP real do cliente
+app.set("trust proxy", 1);
+
 const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -110,6 +113,16 @@ app.get("/api", (req, res) => {
 
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, "..", "Front", "home.html"));
+});
+
+// ========================================
+// HANDLER DE ERRO GLOBAL
+// ========================================
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+    console.error('Erro não tratado:', err.message);
+    res.status(500).json({ success: false, error: 'Erro interno no servidor' });
 });
 
 // ========================================

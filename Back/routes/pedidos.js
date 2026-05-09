@@ -1,15 +1,29 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const { authenticateToken } = require('../middlewares/auth');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 const db = require('../models/db');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'techtake_default_secret';
+
 const router = express.Router();
+
+// Middleware: apenas admin pode listar pedidos
+const verifyAdminToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1] || req.query.token;
+    if (!token) return res.status(401).json({ success: false, message: 'Token não fornecido' });
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err || !user.isAdmin) return res.status(403).json({ success: false, message: 'Acesso negado' });
+        req.user = user;
+        next();
+    });
+};
 
 // ========================================
 // ENVIAR PEDIDO / ORÇAMENTO
 // ========================================
 
-router.post('/pedidos', authenticateToken, [
+router.post('/pedidos', [
     body('nome').trim().isLength({ min: 2 }).withMessage('Nome deve ter pelo menos 2 caracteres'),
     body('email').isEmail().normalizeEmail().withMessage('E-mail inválido'),
     body('mensagem').trim().isLength({ min: 10 }).withMessage('Mensagem deve ter pelo menos 10 caracteres')
@@ -44,7 +58,7 @@ router.post('/pedidos', authenticateToken, [
 // LISTAR PEDIDOS (PROTEGIDO)
 // ========================================
 
-router.get('/pedidos', authenticateToken, (req, res) => {
+router.get('/pedidos', verifyAdminToken, (req, res) => {
     db.all(`SELECT * FROM pedidos ORDER BY criado_em DESC`, [], (err, rows) => {
         if (err) {
             console.error('Erro ao buscar pedidos:', err);

@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contratar ServiÃ§os - Buxa Audio Visual</title>
+    <title>Contratar Serviços - Buxa Audio Visual</title>
     <style>
         :root {
             --clr-bg: #0b0e14;
@@ -333,7 +333,7 @@
         <h1>ðŸŽ¥ Buxa Audio Visual</h1>
         <div class="nav-right">
             <a href="/home">Home</a>
-            <a href="/servicos">ServiÃ§os</a>
+            <a href="/servicos">Serviços</a>
             <a href="/sobre">Sobre</a>
             <a href="/contato">Contato</a>
         </div>
@@ -341,13 +341,13 @@
 
     <div class="container">
         <div class="header">
-            <h1>Contratar Nossos ServiÃ§os</h1>
-            <p>Escolha o pacote perfeito para seu projeto audiovisual. Contamos com diferentes soluÃ§Ãµes tÃ©cnicas para
+            <h1>Contratar Nossos Serviços</h1>
+            <p>Escolha o pacote perfeito para seu projeto audiovisual. Contamos com diferentes soluções técnicas para
                 atender suas necessidades.</p>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('pacotes', this)">ðŸ“¦ Pacotes de ServiÃ§os</button>
+            <button class="tab-btn active" onclick="switchTab('pacotes', this)">ðŸ“¦ Pacotes de Serviços</button>
             <button class="tab-btn" onclick="switchTab('drone', this)">ðŸš Com Drone</button>
             <button class="tab-btn" onclick="switchTab('adicional', this)">ðŸ”’ Adicionais</button>
         </div>
@@ -360,7 +360,7 @@
             </div>
             <div class="packages-grid" id="pacotesGrid" style="display: none;"></div>
             <div class="no-content" id="pacotesEmpty" style="display: none;">
-                Nenhum pacote disponÃ­vel no momento.
+                Nenhum pacote disponível no momento.
             </div>
         </div>
 
@@ -372,7 +372,7 @@
             </div>
             <div class="packages-grid" id="droneGrid" style="display: none;"></div>
             <div class="no-content" id="droneEmpty" style="display: none;">
-                Nenhum pacote com drone disponÃ­vel no momento.
+                Nenhum pacote com drone disponível no momento.
             </div>
         </div>
 
@@ -381,34 +381,34 @@
             <div class="packages-grid">
                 <div class="package-card">
                     <div class="package-header">
-                        <h3>ðŸ”’ Seguro de MÃ­dia</h3>
+                        <h3>ðŸ”’ Seguro de Mídia</h3>
                     </div>
                     <div class="package-body">
                         <div class="package-info">
-                            <div class="info-label">O que vocÃª ganha:</div>
+                            <div class="info-label">O que você ganha:</div>
                             <div class="info-value">
                                 âœ“ Armazenamento seguro por 30 dias<br>
                                 âœ“ Backup de todos os arquivos<br>
-                                âœ“ RecuperaÃ§Ã£o imediata se necessÃ¡rio<br>
-                                âœ“ ProteÃ§Ã£o contra perda de dados
+                                âœ“ Recuperação imediata se necessário<br>
+                                âœ“ Proteção contra perda de dados
                             </div>
                         </div>
 
                         <div class="price-section">
                             <div class="price-range">R$ 30,00</div>
-                            <div class="price-label">Taxa Ãºnica</div>
+                            <div class="price-label">Taxa única</div>
                         </div>
 
                         <div class="package-info">
-                            <div class="info-label">DescriÃ§Ã£o:</div>
+                            <div class="info-label">Descrição:</div>
                             <div class="info-value">
-                                ServiÃ§o extra para garantir a total seguranÃ§a dos seus materiais audiovisuais (fotos e
-                                vÃ­deos). Armazenamos seu projeto de forma segura em nossos servidores por atÃ© 30 dias
-                                apÃ³s o pagamento.
+                                Serviço extra para garantir a total segurança dos seus materiais audiovisuais (fotos e
+                                vídeos). Armazenamos seu projeto de forma segura em nossos servidores por até 30 dias
+                                após o pagamento.
                             </div>
                         </div>
 
-                        <button class="btn-contratar" onclick="contratar('Seguro de MÃ­dia', 30)">Contratar</button>
+                        <button class="btn-contratar" onclick="contratar('Seguro de Mídia', 30)">Contratar</button>
                     </div>
                 </div>
             </div>
@@ -416,8 +416,8 @@
     </div>
 
     <div class="footer">
-        <h3>Pronto para comeÃ§ar seu projeto?</h3>
-        <p>Entre em contato conosco atravÃ©s da pÃ¡gina de contato ou escolha um pacote acima.</p>
+        <h3>Pronto para começar seu projeto?</h3>
+        <p>Entre em contato conosco através da página de contato ou escolha um pacote acima.</p>
         <p style="margin-top: 20px; opacity: 0.8;">Â© 2026 Buxa Audio Visual - Todos os direitos reservados</p>
     </div>
     <script src="config.js"></script>
@@ -429,12 +429,12 @@
         // ========================================
 
         function switchTab(tabName, button) {
-            // Esconder conteÃºdos
+            // Esconder conteúdos
             document.querySelectorAll('.content').forEach(el => {
                 el.classList.remove('active');
             });
 
-            // Esconder botÃµes ativos
+            // Esconder botões ativos
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
@@ -486,7 +486,7 @@
                         if (pacote.configuracao_tecnica) {
                             conteudo += `
                                 <div class="package-info">
-                                    <div class="info-label">ConfiguraÃ§Ã£o TÃ©cnica:</div>
+                                    <div class="info-label">Configuração Técnica:</div>
                                     <div class="info-value">${pacote.configuracao_tecnica}</div>
                                 </div>
                             `;
@@ -504,7 +504,7 @@
                         if (pacote.descricao) {
                             conteudo += `
                                 <div class="package-info">
-                                    <div class="info-label">DescriÃ§Ã£o:</div>
+                                    <div class="info-label">Descrição:</div>
                                     <div class="info-value">${pacote.descricao}</div>
                                 </div>
                             `;
@@ -570,7 +570,7 @@
                         if (drone.configuracao_tecnica) {
                             conteudo += `
                                 <div class="package-info">
-                                    <div class="info-label">ConfiguraÃ§Ã£o TÃ©cnica:</div>
+                                    <div class="info-label">Configuração Técnica:</div>
                                     <div class="info-value">${drone.configuracao_tecnica}</div>
                                 </div>
                             `;
@@ -617,8 +617,8 @@
         // ========================================
 
         function contratar(nomePacote, preco) {
-            const mensagem = `OlÃ¡! Gostaria de contratar o pacote "${nomePacote}" (Valor: R$ ${preco.toFixed(2)})`;
-            const whatsappLink = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            const mensagem = `Olá! Gostaria de contratar o pacote "${nomePacote}" (Valor: R$ ${preco.toFixed(2)})`;
+            const whatsappLink = `https://wa.me/5541999999999?text=${encodeURIComponent(mensagem)}`; // SUBSTITUA pelo número real
             window.open(whatsappLink, '_blank');
         }
 

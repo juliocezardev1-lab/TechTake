@@ -3,6 +3,16 @@ const rateLimit = (options = {}) => {
     const windowMs = options.windowMs || 15 * 60 * 1000;
     const maxRequests = options.max || 120;
 
+    // Limpeza periódica de entradas expiradas para evitar memory leak
+    setInterval(() => {
+        const now = Date.now();
+        for (const [ip, entry] of requests.entries()) {
+            if (now - entry.firstRequest > windowMs) {
+                requests.delete(ip);
+            }
+        }
+    }, windowMs);
+
     return (req, res, next) => {
         const ip = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress || 'unknown';
         const now = Date.now();

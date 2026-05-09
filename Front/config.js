@@ -34,9 +34,13 @@ btnSend?.addEventListener("click", async () => {
     }
 
     try {
+        const token = getToken();
         const response = await fetch(`${API_BASE_URL}/api/pedidos`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                "Content-Type": "application/json",
+                ...(token ? { "Authorization": `Bearer ${token}` } : {})
+            },
             body: JSON.stringify({ nome, email, telefone, servico, mensagem })
         });
 

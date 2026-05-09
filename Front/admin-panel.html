@@ -411,6 +411,7 @@
             <button class="tab-btn active" data-tab="pacotes" onclick="switchTab('pacotes', this)">Pacotes de
                 Serviços</button>
             <button class="tab-btn" data-tab="drone" onclick="switchTab('drone', this)">Pacotes com Drone</button>
+            <button class="tab-btn" data-tab="pedidos" onclick="switchTab('pedidos', this)">Pedidos / Contatos</button>
         </div>
 
         <!-- ABA DE PACOTES -->
@@ -457,6 +458,31 @@
                     <tbody id="droneBody">
                         <tr>
                             <td colspan="5" style="text-align: center; color: #999;">Carregando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ABA DE PEDIDOS -->
+        <div id="pedidos" class="tab-content">
+            <div class="section">
+                <h2>📋 Pedidos / Contatos</h2>
+                <table class="table" id="pedidosTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Telefone</th>
+                            <th>Serviço</th>
+                            <th>Mensagem</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pedidosBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: #999;">Carregando...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -551,7 +577,7 @@
     <script>
         let currentPacoteId = null;
         let currentDroneId = null;
-        const API_URL = 'http://localhost:3000/api';
+        const API_URL = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : '') + '/api';
 
         // ========================================
         // FUNÇÕES DE ABAS
@@ -577,6 +603,8 @@
                 loadPacotes();
             } else if (tabName === 'drone') {
                 loadDrones();
+            } else if (tabName === 'pedidos') {
+                loadPedidos();
             }
         }
 
@@ -870,6 +898,46 @@
                 }
             } catch (err) {
                 showMessage('Erro ao deletar pacote drone', 'error');
+            }
+        }
+
+        // ========================================
+        // CARREGAR PEDIDOS
+        // ========================================
+
+        async function loadPedidos() {
+            try {
+                const token = getToken();
+                const response = await fetch(`${API_URL}/pedidos`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+
+                const tbody = document.getElementById('pedidosBody');
+                tbody.innerHTML = '';
+
+                const rows = Array.isArray(data) ? data : [];
+                if (rows.length > 0) {
+                    rows.forEach(p => {
+                        const tr = document.createElement('tr');
+                        const data_fmt = p.criado_em ? new Date(p.criado_em).toLocaleString('pt-BR') : '-';
+                        tr.innerHTML = `
+                            <td>${p.id}</td>
+                            <td>${p.nome || '-'}</td>
+                            <td>${p.email || '-'}</td>
+                            <td>${p.telefone || '-'}</td>
+                            <td>${p.servico || '-'}</td>
+                            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${(p.mensagem||'').replace(/"/g,'&quot;')}">${p.mensagem || '-'}</td>
+                            <td>${data_fmt}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#999;">Nenhum pedido encontrado</td></tr>';
+                }
+            } catch (err) {
+                console.error('Erro ao carregar pedidos:', err);
+                showMessage('Erro ao carregar pedidos', 'error');
             }
         }
 

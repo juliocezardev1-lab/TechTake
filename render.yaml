@@ -3,14 +3,12 @@ services:
     name: techtake-site
     env: node
     root: .
-    buildCommand: npm install && cd Back && npm install --build-from-source=sqlite3
+    buildCommand: cd Back && npm install --build-from-source=sqlite3 && node seed.js
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 3000
       - key: JWT_SECRET
-        value: techtake_super_secret_key_2024
+        generateValue: true
       - key: FRONTEND_ORIGIN
         value: https://techtake-site.onrender.com

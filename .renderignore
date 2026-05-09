@@ -1,8 +1,5 @@
-database/
 node_modules/
 Back/node_modules/
 *.bak
-*.txt
-*.md
 .git/
 .gitignore
