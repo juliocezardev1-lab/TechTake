@@ -10,5 +10,7 @@ services:
         value: production
       - key: PORT
         value: 3000
+      - key: JWT_SECRET
+        value: techtake_super_secret_key_2024
       - key: FRONTEND_ORIGIN
         value: https://seu-site-netlify.netlify.app
