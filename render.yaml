@@ -3,7 +3,7 @@ services:
     name: techtak-api
     env: node
     root: .
-    buildCommand: npm install && cd Back && npm install
+    buildCommand: npm install && cd Back && npm install --build-from-source=sqlite3
     startCommand: npm start
     envVars:
       - key: NODE_ENV
