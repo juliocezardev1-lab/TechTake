@@ -2,12 +2,15 @@ services:
   - type: web
     name: techtak-api
     env: node
-    buildCommand: cd Back && npm install
-    startCommand: cd Back && npm start
+    root: Back
+    buildCommand: npm install
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 3000
+      - key: JWT_SECRET
+        value: techtake_super_secret_key_2024
       - key: FRONTEND_ORIGIN
         value: https://seu-site-netlify.netlify.app
