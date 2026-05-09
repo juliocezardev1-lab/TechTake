@@ -1,0 +1,13 @@
+{
+  "name": "techtake-site-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install": "cd Back && npm install",
+    "start": "cd Back && npm start"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

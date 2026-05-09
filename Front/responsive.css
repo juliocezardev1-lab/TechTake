@@ -1,0 +1,278 @@
+/* Common mobile and responsive improvements for TechTake front-end */
+:root {
+    --responsive-breakpoint: 900px;
+}
+
+html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+img,
+picture,
+svg,
+iframe,
+.video,
+object,
+embed {
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+a {
+    word-break: break-word;
+}
+
+body {
+    min-height: 100vh;
+}
+
+nav {
+    position: relative;
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--clr-text);
+    cursor: pointer;
+    transition: background .25s ease, transform .25s ease;
+}
+
+.nav-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 999px;
+    transition: transform .25s ease, opacity .25s ease;
+    position: relative;
+}
+
+.nav-toggle span::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+}
+
+.nav-toggle span::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+}
+
+.nav-open .nav-toggle span {
+    background: transparent;
+}
+
+.nav-open .nav-toggle span::before {
+    transform: rotate(45deg) translate(1px, 1px);
+}
+
+.nav-open .nav-toggle span::after {
+    transform: rotate(-45deg) translate(1px, -1px);
+}
+
+@media (max-width: 900px) {
+    nav {
+        padding: 0.9rem 1rem !important;
+    }
+
+    .nav-toggle {
+        display: flex !important;
+    }
+
+    .nav-links,
+    .nav-right {
+        display: none !important;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        background: rgba(11, 14, 20, 0.98);
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        padding: 1rem 1.25rem 1.2rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        z-index: 20;
+    }
+
+    .nav-links li,
+    .nav-right {
+        width: 100%;
+    }
+
+    .nav-links a,
+    .nav-links button,
+    .nav-right a,
+    .nav-right button {
+        display: block;
+        width: 100%;
+        padding: 0.95rem 0;
+        color: var(--clr-text) !important;
+        transition: color .25s ease, background .25s ease;
+        border-radius: 0.75rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links button:hover,
+    .nav-links a.active,
+    .nav-right a:hover,
+    .nav-right button:hover,
+    .nav-right a.active {
+        color: var(--clr-accent1) !important;
+        background: rgba(0, 198, 255, 0.08);
+    }
+
+    .nav-open .nav-links,
+    .nav-open .nav-right {
+        display: flex !important;
+    }
+
+    .nav-open .nav-right {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
+    .section,
+    .container,
+    .page-hero,
+    .portfolio-wrap,
+    .contact-layout,
+    .manifesto,
+    .about,
+    .stats-strip {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
+
+    .page-hero {
+        padding-bottom: 1.5rem !important;
+    }
+
+    .page-hero-content,
+    .hero-content {
+        padding: 0 0.75rem !important;
+    }
+
+    .page-hero .breadcrumb,
+    .hero-sub,
+    .section-label,
+    .section-title,
+    .about-text h2,
+    .page-hero-content h1,
+    .hero-title,
+    h1,
+    h2,
+    h3 {
+        word-break: break-word;
+    }
+
+    .section-title,
+    .page-hero-content h1,
+    .hero-title,
+    .about-text h2 {
+        font-size: clamp(2rem, 6vw, 3.4rem) !important;
+    }
+
+    .services-grid,
+    .portfolio-grid,
+    .stats-inner,
+    .package-card,
+    .form-row,
+    .manifesto,
+    .contact-layout {
+        gap: 1rem !important;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr !important;
+        grid-auto-rows: auto !important;
+    }
+
+    .portfolio-item,
+    .pf-item,
+    .service-card,
+    .package-card,
+    .value-card {
+        min-width: 0 !important;
+    }
+
+    .stats {
+        flex-wrap: wrap !important;
+        gap: 1rem !important;
+    }
+
+    .stats > div {
+        flex: 1 1 45% !important;
+    }
+
+    .page-hero,
+    .portfolio-wrap,
+    .contact-layout,
+    .section,
+    .container {
+        width: 100% !important;
+    }
+
+    .package-card,
+    .contact-form,
+    .about-visual,
+    .manifesto-visual {
+        width: 100% !important;
+    }
+
+    .package-body,
+    .contact-info,
+    .contact-form,
+    .about-text,
+    .manifesto-text {
+        padding: 1rem !important;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .nav-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav-links {
+        padding: 1rem 1rem 1.2rem;
+    }
+
+    .section-title,
+    .page-hero-content h1,
+    .hero-title,
+    .about-text h2 {
+        font-size: clamp(1.9rem, 8vw, 2.8rem) !important;
+    }
+
+    .page-hero {
+        min-height: 52vh !important;
+    }
+
+    .page-hero-content,
+    .hero-content {
+        padding: 0 0.5rem !important;
+    }
+}

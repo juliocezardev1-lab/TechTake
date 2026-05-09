@@ -134,6 +134,41 @@ function showMessage(message, type) {
     }
 }
 
+function initMobileNav() {
+    const nav = document.querySelector('nav#navbar, nav.navbar');
+    const links = nav?.querySelector('.nav-links, .nav-right');
+    if (!nav || !links) return;
+
+    if (!nav.querySelector('.nav-toggle')) {
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'nav-toggle';
+        toggle.setAttribute('aria-label', 'Abrir menu');
+
+        const bar = document.createElement('span');
+        toggle.appendChild(bar);
+        nav.appendChild(toggle);
+
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('nav-open');
+        });
+
+        links.querySelectorAll('a, button').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 900) {
+                    nav.classList.remove('nav-open');
+                }
+            });
+        });
+    }
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900) {
+            nav.classList.remove('nav-open');
+        }
+    });
+}
+
 function protegerConteudo() {
     const body = document.body;
     if (body) {
@@ -200,5 +235,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     atualizarMenuAutenticacao();
+    initMobileNav();
     protegerConteudo();
 });
