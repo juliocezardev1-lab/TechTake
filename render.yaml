@@ -13,4 +13,4 @@ services:
       - key: JWT_SECRET
         value: techtake_super_secret_key_2024
       - key: FRONTEND_ORIGIN
-        value: https://seu-site-netlify.netlify.app
+        value: https://techtake-site.netlify.app
