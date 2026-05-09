@@ -1,0 +1,7 @@
+Front/
+database/
+*.bak
+*.txt
+*.md
+.git/
+.gitignore
