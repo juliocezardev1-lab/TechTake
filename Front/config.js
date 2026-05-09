@@ -4,8 +4,10 @@
 
 // Altere este valor para o host público quando o site estiver em produção.
 // Mantenha localhost para desenvolvimento local.
+// Na Opção A (tudo no Render), o front e o back estão na mesma origem.
+// Em desenvolvimento local usa localhost:3000; em produção usa URL relativa (mesmo servidor).
 const LOCAL_API_BASE_URL = "http://localhost:3000";
-const PROD_API_BASE_URL = "https://techtake-site.onrender.com"; // <-- URL do Render (atualizada)
+const PROD_API_BASE_URL = ""; // string vazia = mesma origem (Render serve tudo)
 const API_BASE_URL = window.location.hostname === "localhost" ? LOCAL_API_BASE_URL : PROD_API_BASE_URL;
 
 // ========================================

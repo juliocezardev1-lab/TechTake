@@ -20,19 +20,29 @@ const isProduction = process.env.NODE_ENV === 'production';
 // MIDDLEWARES
 // ========================================
 
-app.use(helmet({ contentSecurityPolicy: false })); // Headers de segurança
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
+app.use(helmet({ contentSecurityPolicy: false }));
+
+// CORS: em produção aceita a própria URL do Render; em dev aceita localhost
+const allowedOrigins = process.env.FRONTEND_ORIGIN
+    ? [process.env.FRONTEND_ORIGIN]
+    : ['http://localhost:3000'];
+
 app.use(cors({
-    origin: FRONTEND_ORIGIN,
+    origin: function (origin, callback) {
+        // Permite requisições sem origin (ex: curl, mobile apps)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+        callback(new Error('Bloqueado pelo CORS'));
+    },
     credentials: true
 }));
+
 app.use(morgan(isProduction ? "combined" : "dev"));
 app.use(express.json());
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 120 }));
 
-if (isProduction) {
-    app.use(express.static(path.join(__dirname, "..", "Front")));
-}
+// Servir arquivos estáticos do Front (sempre, não só em produção)
+app.use(express.static(path.join(__dirname, "..", "Front")));
 
 // ========================================
 // ROTAS DAS PÁGINAS
@@ -99,7 +109,7 @@ app.get("/api", (req, res) => {
 // ========================================
 
 app.use((req, res) => {
-    res.status(404).json({ success: false, error: "Rota não encontrada." });
+    res.status(404).sendFile(path.join(__dirname, "..", "Front", "home.html"));
 });
 
 // ========================================

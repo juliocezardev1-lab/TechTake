@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: techtak-api
+    name: techtake-site
     env: node
     root: .
     buildCommand: npm install && cd Back && npm install --build-from-source=sqlite3
@@ -13,4 +13,4 @@ services:
       - key: JWT_SECRET
         value: techtake_super_secret_key_2024
       - key: FRONTEND_ORIGIN
-        value: https://techtake-site.netlify.app
+        value: https://techtake-site.onrender.com
