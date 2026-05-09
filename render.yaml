@@ -1,10 +1,9 @@
 services:
   - type: web
     name: techtak-api
-    runtime: node
-    rootDir: Back
-    buildCommand: npm install
-    startCommand: npm start
+    env: node
+    buildCommand: cd Back && npm install
+    startCommand: cd Back && npm start
     envVars:
       - key: NODE_ENV
         value: production
