@@ -1,0 +1,96 @@
+Resumo Unificado dos arquivos .md e .txt
+
+1. admin-credentials.txt
+- Contém credenciais padrão de administrador para o painel.
+- Email: admin@buxaaudiovisual.com
+- Senha: Admin@2024!Secure
+- Recomendações: alterar a senha ao primeiro login, usar HTTPS em produção.
+- O painel admin permite visualizar, editar, adicionar e deletar pacotes de serviços e gerenciar valores de drone e seguro de mídia.
+
+2. deploy_site_options.txt
+- Lista opções de hospedagem gratuita e paga para sites estáticos.
+- Gratuito: GitHub Pages, Netlify Free, Vercel Free, Firebase Hosting Free.
+- Pago: registro de domínio, hospedagem compartilhada, VPS/Cloud, PaaS.
+- Recomendações para SEO básico, Google Search Console, HTTPS e domínio personalizado.
+
+3. SETUP_GUIA.md
+- Guia do sistema de catálogo e painel admin da Buxa Audio Visual.
+- Instruções de início rápido:
+  - `cd Back && node seed.js`
+  - `npm start`
+- URLs locais principais para cliente e admin.
+- Detalha estrutura de banco de dados e pacotes criados automaticamente.
+- Explica funcionalidades do painel admin e como usar.
+- Lista API endpoints para pacotes e login admin.
+- Inclui dicas de problemas comuns e como resolver.
+
+4. cybersecurity_courses.txt
+- Reúne recursos gratuitos de segurança cibernética.
+- Canais YouTube e playlists: The Cyber Mentor, LiveOverflow, HackerSploit, NetworkChuck, John Hammond, Professor Messer, NahamSec.
+- Plataformas: TryHackMe, Hack The Box Academy, Cybrary, Open Security Training, OWASP WebGoat, Juice Shop.
+- Guias e livros: OWASP Top 10, Metasploit Unleashed, Web Application Hacker's Handbook.
+- Dicas de uso: combinar teoria com prática, criar laboratório local, manter ética e autorização.
+
+5. RELATORIO_CORRECOES.md
+- Relatório de correções realizadas no projeto.
+- Corrigiu encoding UTF-8 em `Front/sobre.html`, `Front/contato.html`, `Front/login.html`.
+- Resolveu problema do Netlify: backend deve estar em servidor separado.
+- Descreve arquitetura correta: Frontend no Netlify + Backend no Render/Railway/Heroku.
+- Lista passos de deploy e orienta a atualização de `Front/config.js` com URL da API remota.
+- Informa que o guia completo foi criado em `GUIA_DEPLOY_NETLIFY.md`.
+
+6. QUICK_START.txt
+- Documento de início rápido do sistema.
+- Resume funcionalidades do site, painel admin e banco de dados.
+- Instruções rápidas:
+  - `cd Back`
+  - `node seed.js`
+  - `npm start`
+- Lista URLs locais principais e credenciais admin.
+- Resume pacotes criados e funcionalidades do painel.
+- Inclui recomendações para resolver problemas comuns.
+
+7. GUIA_DEPLOY_NETLIFY.md
+- Guia completo para deploy do projeto com frontend no Netlify e backend separado.
+- Passo 1: Deploy do backend em Render (recomendado) ou Railway.
+  - Configurar variáveis: NODE_ENV=production, PORT=3000, FRONTEND_ORIGIN=https://seu-site-netlify.netlify.app.
+  - Copiar URL da API remota.
+- Passo 2: Preparar backend para produção em `Back/server.js`.
+  - Usar `FRONTEND_ORIGIN` e servir frontend estático apenas em produção.
+- Passo 3: Atualizar frontend para usar API remota em `Front/config.js`.
+- Passo 4: Deploy do frontend no Netlify com `Front` como diretório.
+- Passo 5: Executar `node seed.js` uma única vez após backend online.
+- Contém solução de problemas para CORS e backend inacessível.
+
+Como executar agora que o front no Netlify e o backend no Render deram certo
+
+1. No servidor backend (Render):
+- O backend já está online e rodando no Render.
+- O banco de dados SQLite deve ter sido populado com `cd Back && node seed.js`.
+- Se ainda não foi feito, execute no diretório `Back`:
+  - `node seed.js`
+
+2. No frontend (Netlify):
+- Certifique-se de que `Front/config.js` aponta para a URL remota do backend Render:
+  - `const PROD_API_BASE_URL = "https://sua-api-no-render.onrender.com";`
+- O site no Netlify deve fazer chamadas para essa URL remota.
+
+3. Teste o fluxo completo:
+- Acesse seu site Netlify e tente usar o formulário de pedidos ou login.
+- Se o frontend estiver no Netlify e o backend no Render, o fluxo deve funcionar normalmente.
+
+4. Para executar localmente novamente (se quiser desenvolver ou testar antes de redeploy):
+- Abra terminal no diretório raiz do projeto.
+- Execute:
+  1. `cd Back`
+  2. `node seed.js` (apenas uma vez para popular o banco)
+  3. `npm start`
+- Depois acesse localmente:
+  - Cliente: `http://localhost:3000/servicos`
+  - Admin: `http://localhost:3000/admin-login`
+
+Resumo final:
+- Frontend no Netlify: pronto.
+- Backend no Render: pronto.
+- O próximo passo é usar a URL da API remota no `Front/config.js` e testar no site publicado.
+- Arquivo de resumo criado: `SUMMARY_ALL_DOCS.txt`.
