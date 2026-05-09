@@ -14,21 +14,25 @@ const { rateLimit } = require('./middlewares/rateLimit');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // ========================================
 // MIDDLEWARES
 // ========================================
 
 app.use(helmet({ contentSecurityPolicy: false })); // Headers de segurança
-const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || (process.env.NODE_ENV === 'production' ? 'https://seu-dominio.com' : 'http://localhost:3000');
+const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || 'http://localhost:3000';
 app.use(cors({
     origin: FRONTEND_ORIGIN,
     credentials: true
 }));
-app.use(morgan("dev"));
+app.use(morgan(isProduction ? "combined" : "dev"));
 app.use(express.json());
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 120 }));
-app.use(express.static(path.join(__dirname, "..", "Front")));
+
+if (isProduction) {
+    app.use(express.static(path.join(__dirname, "..", "Front")));
+}
 
 // ========================================
 // ROTAS DAS PÁGINAS
