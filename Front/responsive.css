@@ -275,4 +275,98 @@ nav {
     .hero-content {
         padding: 0 0.5rem !important;
     }
+
+    .auth-container,
+    .auth-card,
+    .container,
+    .modal-content,
+    .page-hero,
+    .contact-layout,
+    .about,
+    .portfolio-wrap,
+    .manifesto {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .auth-container,
+    .container {
+        padding: 1rem !important;
+    }
+
+    .auth-card,
+    .modal-content {
+        padding: 1.5rem !important;
+    }
+
+    .auth-card h1,
+    .logo-area h1,
+    .page-hero-content h1,
+    .section-title,
+    .hero-title,
+    .about-text h2 {
+        font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
+    }
+
+    .auth-subtitle,
+    .auth-footer,
+    .form-group label,
+    .nav-menu a,
+    .btn-login,
+    .auth-btn,
+    .btn-add,
+    .btn-save,
+    .btn-cancel,
+    .btn-logout {
+        width: 100% !important;
+    }
+
+    .input-group input,
+    .form-group input,
+    .form-group textarea,
+    .auth-btn,
+    .btn-login,
+    .btn-add,
+    .btn-save,
+    .btn-cancel {
+        font-size: 1rem !important;
+        min-height: 48px;
+    }
+
+    .footer p,
+    .auth-footer,
+    .message {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+    }
+
+    .table {
+        display: block !important;
+        overflow-x: auto !important;
+        min-width: 320px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px !important;
+    }
+
+    .header {
+        padding: 15px 12px !important;
+    }
+
+    .header h1 {
+        font-size: 20px !important;
+    }
+
+    .header-right,
+    .nav-menu {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .tab-btn {
+        flex: 1 1 100% !important;
+    }
 }

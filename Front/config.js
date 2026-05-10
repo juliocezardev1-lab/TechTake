@@ -14,7 +14,7 @@
 //
 const API_BASE_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:3000'           // desenvolvimento local
-    : 'https://techtake-site.onrender.com'; // ← SUBSTITUA AQUI
+    : 'https://tech-take-com.onrender.com'; // URL do backend no Render
 
 // ============================================================
 // AUTENTICAÇÃO

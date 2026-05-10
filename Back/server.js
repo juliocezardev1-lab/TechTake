@@ -34,14 +34,18 @@ app.use(helmet({ contentSecurityPolicy: false }));
 // - Em desenvolvimento: aceita localhost:3000
 // - Em produção:        aceita apenas o domínio do Netlify definido em FRONTEND_ORIGIN
 const allowedOrigins = isProduction
-    ? [process.env.FRONTEND_ORIGIN]
+    ? (process.env.FRONTEND_ORIGIN || '').split(',').map(origin => origin.trim()).filter(Boolean)
     : ['http://localhost:3000'];
+
+if (isProduction && allowedOrigins.length === 0) {
+    console.warn('⚠️ FRONTEND_ORIGIN não definido. Permitindo requisições CORS de qualquer origem em produção.');
+}
 
 app.use(cors({
     origin: (origin, callback) => {
         // Permite chamadas sem origin (Postman, curl, apps mobile)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.includes(origin)) return callback(null, true);
+        if (allowedOrigins.length === 0 || allowedOrigins.includes(origin)) return callback(null, true);
         callback(new Error(`Origem bloqueada pelo CORS: ${origin}`));
     },
     credentials: true
