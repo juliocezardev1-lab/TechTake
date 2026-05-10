@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: techtake-site
+    name: techtake-api
     env: node
     root: .
     buildCommand: cd Back && npm install --build-from-source=sqlite3 && node seed.js
@@ -9,6 +9,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: JWT_SECRET
-        generateValue: true
+        sync: false  # IMPORTANTE: defina manualmente no painel do Render com uma chave forte e fixa
       - key: FRONTEND_ORIGIN
-        value: https://techtake-site.onrender.com
+        value: https://SEU-SITE.netlify.app  # ← substitua pela URL real do Netlify

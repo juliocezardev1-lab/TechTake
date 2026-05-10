@@ -98,12 +98,12 @@ router.post('/login', [
             }
 
             if (!user) {
-                return res.status(401).json({ success: false, error: 'Usuário não encontrado' });
+                return res.status(401).json({ success: false, error: 'E-mail ou senha incorretos' });
             }
 
             const senhaValida = await bcrypt.compare(senha, user.senha);
             if (!senhaValida) {
-                return res.status(401).json({ success: false, error: 'Senha incorreta' });
+                return res.status(401).json({ success: false, error: 'E-mail ou senha incorretos' });
             }
 
             const token = jwt.sign(

@@ -44,51 +44,64 @@ app.use(morgan(isProduction ? "combined" : "dev"));
 app.use(express.json());
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 120 }));
 
-// Servir arquivos estáticos do Front (sempre, não só em produção)
-app.use(express.static(path.join(__dirname, "..", "Front")));
+// Servir arquivos estáticos do Front — usado APENAS em desenvolvimento local
+// Em produção, o Front é hospedado no Netlify e o Back apenas expõe a API
+if (!isProduction) {
+    app.use(express.static(path.join(__dirname, "..", "Front")));
+}
 
 // ========================================
 // ROTAS DAS PÁGINAS
 // ========================================
 
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "cadastro.html"));
-});
+if (!isProduction) {
+    app.get("/", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "cadastro.html"));
+    });
+    
+    app.get("/home", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "home.html"));
+    });
+    
+    app.get("/login", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "login.html"));
+    });
+    
+    app.get("/cadastro", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "cadastro.html"));
+    });
+    
+    app.get("/servicos", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "servicos.html"));
+    });
+    
+    app.get("/sobre", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "sobre.html"));
+    });
+    
+    app.get("/contato", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "contato.html"));
+    });
+    
+    app.get("/portefolio", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "portefolio.html"));
+    });
+    
+    app.get("/admin-login", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "admin-login.html"));
+    });
+    
+    app.get("/admin-panel", (req, res) => {
+        res.sendFile(path.join(__dirname, "..", "Front", "admin-panel.html"));
+    });
+}
 
-app.get("/home", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "home.html"));
-});
+// ========================================
+// ROTA TESTE (deve ficar antes dos routers para não ser capturada por eles)
+// ========================================
 
-app.get("/login", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "login.html"));
-});
-
-app.get("/cadastro", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "cadastro.html"));
-});
-
-app.get("/servicos", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "servicos.html"));
-});
-
-app.get("/sobre", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "sobre.html"));
-});
-
-app.get("/contato", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "contato.html"));
-});
-
-app.get("/portefolio", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "portefolio.html"));
-});
-
-app.get("/admin-login", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "admin-login.html"));
-});
-
-app.get("/admin-panel", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "Front", "admin-panel.html"));
+app.get("/api", (req, res) => {
+    res.json({ success: true, message: "API funcionando!" });
 });
 
 // ========================================
@@ -98,14 +111,6 @@ app.get("/admin-panel", (req, res) => {
 app.use('/api', authRoutes);
 app.use('/api', pedidosRoutes);
 app.use('/api', adminRoutes);
-
-// ========================================
-// ROTA TESTE
-// ========================================
-
-app.get("/api", (req, res) => {
-    res.json({ success: true, message: "API funcionando!" });
-});
 
 // ========================================
 // ROTA NÃO ENCONTRADA

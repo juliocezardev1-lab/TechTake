@@ -131,7 +131,15 @@ router.post('/admin/pacotes', verifyAdminToken, [
 // ATUALIZAR PACOTE (ADMIN)
 // ========================================
 
-router.put('/admin/pacotes/:id', verifyAdminToken, (req, res) => {
+router.put('/admin/pacotes/:id', verifyAdminToken, [
+    body('nome').trim().isLength({ min: 3 }).withMessage('Nome deve ter pelo menos 3 caracteres'),
+    body('investimento_min').isFloat({ min: 0 }).withMessage('Investimento mínimo inválido'),
+    body('investimento_max').isFloat({ min: 0 }).withMessage('Investimento máximo inválido')
+], (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ success: false, errors: errors.array() });
+    }
     const { id } = req.params;
     const { nome, configuracao_tecnica, destaque_servico, investimento_min, investimento_max, descricao } = req.body;
 

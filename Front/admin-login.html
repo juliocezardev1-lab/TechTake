@@ -238,7 +238,7 @@
             loading.style.display = 'block';
 
             try {
-                const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+                const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://SEU-BACKEND.onrender.com'; // ← mesmo valor de PROD_API_BASE_URL no config.js
                 const response = await fetch(`${API_BASE}/api/admin/login`, {
                     method: 'POST',
                     headers: {

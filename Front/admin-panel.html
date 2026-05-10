@@ -577,7 +577,7 @@
     <script>
         let currentPacoteId = null;
         let currentDroneId = null;
-        const API_URL = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : '') + '/api';
+        const API_URL = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://SEU-BACKEND.onrender.com') + '/api'; // ← mesmo valor de PROD_API_BASE_URL no config.js
 
         // ========================================
         // FUNÇÕES DE ABAS
@@ -770,7 +770,7 @@
                     closePacoteModal();
                     loadPacotes();
                 } else {
-                    showMessage(result.error || 'Erro ao salvar pacote', 'error');
+                    showMessage(result.error || (result.errors && result.errors[0]?.msg) || 'Erro ao salvar pacote', 'error');
                 }
             } catch (err) {
                 showMessage('Erro ao salvar pacote', 'error');
@@ -905,6 +905,17 @@
         // CARREGAR PEDIDOS
         // ========================================
 
+        // Escapa caracteres HTML para prevenir XSS
+        function escapeHtml(str) {
+            if (str == null) return '-';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         async function loadPedidos() {
             try {
                 const token = getToken();
@@ -922,13 +933,13 @@
                         const tr = document.createElement('tr');
                         const data_fmt = p.criado_em ? new Date(p.criado_em).toLocaleString('pt-BR') : '-';
                         tr.innerHTML = `
-                            <td>${p.id}</td>
-                            <td>${p.nome || '-'}</td>
-                            <td>${p.email || '-'}</td>
-                            <td>${p.telefone || '-'}</td>
-                            <td>${p.servico || '-'}</td>
-                            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${(p.mensagem||'').replace(/"/g,'&quot;')}">${p.mensagem || '-'}</td>
-                            <td>${data_fmt}</td>
+                            <td>${escapeHtml(p.id)}</td>
+                            <td>${escapeHtml(p.nome)}</td>
+                            <td>${escapeHtml(p.email)}</td>
+                            <td>${escapeHtml(p.telefone)}</td>
+                            <td>${escapeHtml(p.servico)}</td>
+                            <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(p.mensagem)}">${escapeHtml(p.mensagem)}</td>
+                            <td>${escapeHtml(data_fmt)}</td>
                         `;
                         tbody.appendChild(tr);
                     });

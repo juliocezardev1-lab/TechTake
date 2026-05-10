@@ -2,13 +2,18 @@
 // CONFIG API
 // ========================================
 
-// Altere este valor para o host público quando o site estiver em produção.
-// Mantenha localhost para desenvolvimento local.
-// Na Opção A (tudo no Render), o front e o back estão na mesma origem.
-// Em desenvolvimento local usa localhost:3000; em produção usa URL relativa (mesmo servidor).
+// LOCAL: backend roda em localhost:3000
+// PRODUÇÃO: frontend no Netlify, backend no Render (URLs diferentes)
+//
+// ⚠️  SUBSTITUA a URL abaixo pela URL real do seu backend no Render:
+//     Exemplo: "https://techtake-api.onrender.com"
+//
 const LOCAL_API_BASE_URL = "http://localhost:3000";
-const PROD_API_BASE_URL = ""; // string vazia = mesma origem (Render serve tudo)
-const API_BASE_URL = window.location.hostname === "localhost" ? LOCAL_API_BASE_URL : PROD_API_BASE_URL;
+const PROD_API_BASE_URL = "https://SEU-BACKEND.onrender.com"; // ← altere aqui
+
+const API_BASE_URL = window.location.hostname === "localhost"
+    ? LOCAL_API_BASE_URL
+    : PROD_API_BASE_URL;
 
 // ========================================
 // ENVIAR PEDIDO / ORÇAMENTO
@@ -176,33 +181,30 @@ function initMobileNav() {
 }
 
 function protegerConteudo() {
-    const body = document.body;
-    if (body) {
-        body.style.userSelect = 'none';
-        body.style.webkitUserSelect = 'none';
-        body.style.msUserSelect = 'none';
-    }
+    // Desativa seleção de texto apenas em elementos não-interativos
+    const style = document.createElement('style');
+    style.textContent = `
+        body { user-select: none; -webkit-user-select: none; }
+        input, textarea, select, [contenteditable] {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+        }
+    `;
+    document.head.appendChild(style);
 
-    document.addEventListener('contextmenu', (event) => event.preventDefault());
-    document.addEventListener('copy', (event) => event.preventDefault());
-    document.addEventListener('cut', (event) => event.preventDefault());
-    document.addEventListener('selectstart', (event) => event.preventDefault());
-    document.addEventListener('dragstart', (event) => event.preventDefault());
+    // Bloqueia Ctrl+U (view-source) e F12 fora de campos de formulário
     document.addEventListener('keydown', (event) => {
-        const key = event.key.toLowerCase();
-        const blocked = [
-            'u', 's', 'c', 'p', 'a',
-            'i', 'j', 'k', 'f12'
-        ];
+        const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        const isFormField = ['input', 'textarea', 'select'].includes(tag);
+        if (isFormField) return; // permite tudo dentro de formulários
 
+        const key = event.key.toLowerCase();
         if (
-            event.ctrlKey && blocked.includes(key) ||
-            event.metaKey && blocked.includes(key) ||
+            (event.ctrlKey && key === 'u') ||
             event.key === 'F12' ||
-            (event.ctrlKey && event.shiftKey && ['i', 'c', 'j'].includes(key))
+            (event.ctrlKey && event.shiftKey && ['i', 'j'].includes(key))
         ) {
             event.preventDefault();
-            event.stopPropagation();
         }
     });
 }
