@@ -3,12 +3,21 @@ services:
     name: techtake-api
     env: node
     root: .
-    buildCommand: cd Back && npm install --build-from-source=sqlite3 && node seed.js
+    buildCommand: cd Back && npm install && node seed.js
     startCommand: npm start
     envVars:
+      # Modo de execução — não altere
       - key: NODE_ENV
         value: production
+
+      # Chave secreta para assinar os tokens JWT de login
+      # ⚠️ OBRIGATÓRIO: defina manualmente no painel do Render
+      # Gere uma chave em: https://randomkeygen.com (use "CodeIgniter Encryption Keys")
       - key: JWT_SECRET
-        sync: false  # IMPORTANTE: defina manualmente no painel do Render com uma chave forte e fixa
+        sync: false
+
+      # URL do seu site no Netlify — necessário para liberar o CORS
+      # ⚠️ OBRIGATÓRIO: substitua pela URL real após fazer o deploy no Netlify
+      # Exemplo: https://techtake-audiovisual.netlify.app
       - key: FRONTEND_ORIGIN
-        value: https://SEU-SITE.netlify.app  # ← substitua pela URL real do Netlify
+        sync: false

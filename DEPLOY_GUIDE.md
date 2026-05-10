@@ -1,103 +1,126 @@
-# 🚀 Guia de Deploy — TechTake Audiovisual
+# Deploy — TechTake Audiovisual
 
-## Arquitetura
+## Arquitetura de produção
 
 ```
-Netlify  →  /Front  (frontend estático)
-Render   →  /Back   (API Node/Express + SQLite)
+Netlify  →  pasta /Front  (site estático: HTML, CSS, JS)
+Render   →  pasta /Back   (API Node.js: login, pedidos, pacotes)
 ```
+
+O frontend faz chamadas para a API do Render via `fetch()`.
+O arquivo que controla para qual URL chamar é `Front/config.js`.
 
 ---
 
-## PASSO 1 — Deploy do Backend no Render
+## Passo 1 — Backend no Render
 
-1. Acesse [render.com](https://render.com) e crie um **Web Service**
-2. Conecte o repositório GitHub
-3. Configure:
-   - **Name:** `techtake-api` (ou o nome que preferir)
-   - **Root Directory:** deixe vazio (raiz do repo)
-   - **Build Command:** `cd Back && npm install --build-from-source=sqlite3 && node seed.js`
+1. Acesse **render.com** → New → **Web Service**
+2. Conecte o repositório do GitHub
+3. Preencha:
+   - **Name:** `techtake-api` (ou qualquer nome)
+   - **Root Directory:** deixe vazio
+   - **Build Command:** `cd Back && npm install && node seed.js`
    - **Start Command:** `npm start`
-4. Em **Environment Variables**, adicione:
-   | Variável | Valor |
-   |---|---|
+4. Clique em **Advanced** → **Add Environment Variable** e adicione:
+
+   | Key | Value |
+   |-----|-------|
    | `NODE_ENV` | `production` |
-   | `JWT_SECRET` | Uma chave longa e aleatória (ex: gere em [randomkeygen.com](https://randomkeygen.com)) |
-   | `FRONTEND_ORIGIN` | A URL do Netlify (preencha após o Passo 2) |
+   | `JWT_SECRET` | Uma chave longa qualquer (ex: `xK9#mP2@qL5vN8!rT3wZ`) |
+   | `FRONTEND_ORIGIN` | Preencha depois do Passo 2 |
+
 5. Clique em **Deploy**
-6. Anote a URL gerada: `https://techtake-api.onrender.com` (exemplo)
+6. Aguarde o deploy terminar e copie a URL, ex: `https://techtake-api.onrender.com`
 
 ---
 
-## PASSO 2 — Deploy do Frontend no Netlify
+## Passo 2 — Frontend no Netlify
 
-1. Acesse [netlify.com](https://netlify.com) e crie um **New site from Git**
-2. Conecte o repositório
-3. Configure:
+1. Acesse **netlify.com** → **Add new site** → **Import an existing project**
+2. Conecte o repositório do GitHub
+3. Preencha:
    - **Base directory:** `Front`
    - **Publish directory:** `Front`
-   - **Build command:** deixar vazio
+   - **Build command:** deixe vazio
 4. Clique em **Deploy site**
-5. Anote a URL gerada: `https://techtake-site.netlify.app` (exemplo)
+5. Copie a URL gerada, ex: `https://techtake-audiovisual.netlify.app`
 
 ---
 
-## PASSO 3 — Conectar os dois
+## Passo 3 — Conectar os dois (3 substituições)
 
-### No arquivo `Front/config.js`, altere a linha:
-```js
-const PROD_API_BASE_URL = "https://SEU-BACKEND.onrender.com";
-```
-Para a URL real do seu Render, ex:
-```js
-const PROD_API_BASE_URL = "https://techtake-api.onrender.com";
-```
+### 3a. No arquivo `Front/config.js`
 
-### No arquivo `Front/admin-login.html`, altere a linha:
+Localize a linha:
 ```js
-const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://SEU-BACKEND.onrender.com';
+: 'https://SEU-BACKEND.onrender.com'; // ← SUBSTITUA AQUI
+```
+Substitua pela URL do seu Render:
+```js
+: 'https://techtake-api.onrender.com';
 ```
 
-### No arquivo `Front/admin-panel.html`, altere a linha:
+### 3b. No arquivo `Front/admin-login.html`
+
+Localize:
 ```js
-const API_URL = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://SEU-BACKEND.onrender.com') + '/api';
+: 'https://SEU-BACKEND.onrender.com';
+```
+Substitua da mesma forma.
+
+### 3c. No arquivo `Front/admin-panel.html`
+
+Localize:
+```js
+: 'https://SEU-BACKEND.onrender.com') + '/api';
+```
+Substitua da mesma forma.
+
+### 3d. No Render, volte à variável `FRONTEND_ORIGIN`
+
+Coloque a URL do Netlify:
+```
+https://techtake-audiovisual.netlify.app
 ```
 
-### No Render, atualize a variável:
-| Variável | Valor |
-|---|---|
-| `FRONTEND_ORIGIN` | `https://techtake-site.netlify.app` (URL real do Netlify) |
-
-Depois faça **redeploy** no Render e **redeploy** no Netlify (ou faça um push no git).
+Após essas alterações, faça **commit + push** no GitHub.
+O Netlify e o Render fazem o redeploy automaticamente.
 
 ---
 
-## Desenvolvimento Local
+## Desenvolvimento local
 
 ```bash
-# 1. Instalar dependências
-cd Back && npm install
+# Instalar dependências do backend
+cd Back
+npm install
 
-# 2. Criar banco de dados com dados iniciais
+# Criar banco de dados com dados iniciais (só na primeira vez)
 node seed.js
 
-# 3. Iniciar o servidor (serve o front também em localhost:3000)
+# Iniciar o servidor (serve a API + os arquivos HTML em localhost:3000)
 npm start
 ```
 
 Acesse: `http://localhost:3000`
 
-> Em modo local o `NODE_ENV` não é `production`, então o servidor
-> serve tanto a API quanto os arquivos HTML do Front.
+**Credenciais do admin (criadas pelo seed.js):**
+- E-mail: `admin@buxaaudiovisual.com`
+- Senha: `Admin@2024!Secure`
 
 ---
 
-## Problemas comuns
+## Problema: CORS bloqueado
 
-| Erro | Causa | Solução |
-|---|---|---|
-| CORS bloqueado | `FRONTEND_ORIGIN` incorreto no Render | Atualize para a URL exata do Netlify |
-| 404 nas rotas | `netlify.toml` não está na pasta `Front` | Verifique se o arquivo existe em `Front/netlify.toml` |
-| API não responde | Backend "sleeping" no Render free tier | Aguarde ~30s no primeiro acesso |
-| Login não funciona | `PROD_API_BASE_URL` incorreto no `config.js` | Verifique a URL do Render em `config.js` |
-| Token inválido após redeploy | `JWT_SECRET` mudou | Use um valor fixo no Render (não `generateValue`) |
+Significa que `FRONTEND_ORIGIN` no Render está errado.
+Verifique se é exatamente a URL do Netlify, sem barra no final, com `https://`.
+
+## Problema: API não responde (primeira vez)
+
+O plano gratuito do Render "dorme" após inatividade.
+A primeira requisição demora ~30 segundos para "acordar" o servidor. É normal.
+
+## Problema: Login inválido após redeploy
+
+O `JWT_SECRET` mudou entre deploys. No Render, defina o `JWT_SECRET` manualmente
+com um valor fixo — nunca use "Generate" do Render para ele.

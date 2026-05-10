@@ -1,248 +1,217 @@
-// ========================================
-// CONFIG API
-// ========================================
+// ============================================================
+// CONFIG.JS — Configurações globais do frontend
+// Este arquivo é carregado por todas as páginas HTML
+// ============================================================
 
-// LOCAL: backend roda em localhost:3000
-// PRODUÇÃO: frontend no Netlify, backend no Render (URLs diferentes)
+// ── URL da API ───────────────────────────────────────────────
 //
-// ⚠️  SUBSTITUA a URL abaixo pela URL real do seu backend no Render:
+// Em desenvolvimento local:  frontend e backend rodam no mesmo localhost:3000
+// Em produção (Netlify):     o frontend está em outro domínio que não é o backend
+//
+// ⚠️  Quando fizer deploy, substitua a URL abaixo pela URL real do seu backend no Render.
 //     Exemplo: "https://techtake-api.onrender.com"
+//     Você encontra essa URL no painel do Render após o primeiro deploy.
 //
-const LOCAL_API_BASE_URL = "http://localhost:3000";
-const PROD_API_BASE_URL = "https://SEU-BACKEND.onrender.com"; // ← altere aqui
+const API_BASE_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'           // desenvolvimento local
+    : 'https://SEU-BACKEND.onrender.com'; // ← SUBSTITUA AQUI
 
-const API_BASE_URL = window.location.hostname === "localhost"
-    ? LOCAL_API_BASE_URL
-    : PROD_API_BASE_URL;
+// ============================================================
+// AUTENTICAÇÃO
+// ============================================================
 
-// ========================================
-// ENVIAR PEDIDO / ORÇAMENTO
-// ========================================
-
-const btnSend = document.getElementById("btnSend");
-
-btnSend?.addEventListener("click", async () => {
-    const nome = document.getElementById("nome")?.value;
-    const email = document.getElementById("email")?.value;
-    const telefone = document.getElementById("telefone")?.value;
-    const servico = document.getElementById("servico")?.value;
-    const mensagem = document.getElementById("mensagem")?.value;
-
-    btnSend.disabled = true;
-    btnSend.textContent = "Enviando...";
-
-    if (!nome || !email || !mensagem) {
-        showMessage("Preencha os campos obrigatórios.", "error");
-        btnSend.disabled = false;
-        btnSend.textContent = "Enviar Pedido";
-        return;
-    }
-
-    try {
-        const token = getToken();
-        const response = await fetch(`${API_BASE_URL}/api/pedidos`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...(token ? { "Authorization": `Bearer ${token}` } : {})
-            },
-            body: JSON.stringify({ nome, email, telefone, servico, mensagem })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            const formWrap = document.getElementById("formWrap");
-            const formSuccess = document.getElementById("formSuccess");
-
-            if (formWrap) formWrap.style.display = "none";
-            if (formSuccess) formSuccess.style.display = "block";
-
-            showMessage("Pedido enviado com sucesso!", "success");
-        } else {
-            showMessage(data.error || "Erro ao enviar.", "error");
-        }
-    } catch (error) {
-        console.error(error);
-        showMessage("Erro ao conectar com servidor.", "error");
-    } finally {
-        btnSend.disabled = false;
-        btnSend.textContent = "Enviar Pedido";
-    }
-});
-
-// ========================================
-// AUXILIAR DE AUTENTICAÇÃO
-// ========================================
-
+// Retorna o token JWT salvo (localStorage = "lembre-me", sessionStorage = sessão)
 function getToken() {
-    return localStorage.getItem("token") || sessionStorage.getItem("token");
+    return localStorage.getItem('token') || sessionStorage.getItem('token');
 }
 
-function usuarioLogado() {
-    return !!getToken();
+// Retorna os dados do usuário logado ou null
+function getUsuario() {
+    const raw = localStorage.getItem('usuario') || sessionStorage.getItem('usuario');
+    try { return raw ? JSON.parse(raw) : null; }
+    catch { return null; }
 }
 
-function pegarUsuario() {
-    const usuario = localStorage.getItem("usuario") || sessionStorage.getItem("usuario");
-    if (!usuario) return null;
-    try {
-        return JSON.parse(usuario);
-    } catch (error) {
-        console.error("Erro ao ler usuário do armazenamento:", error);
-        return null;
-    }
-}
-
+// Verifica com o backend se o token atual ainda é válido
 async function getAuthStatus() {
     const token = getToken();
     if (!token) return { authenticated: false };
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/status`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        const res = await fetch(`${API_BASE_URL}/api/auth/status`, {
+            headers: { Authorization: `Bearer ${token}` }
         });
-        return await response.json();
-    } catch (error) {
-        console.error('Erro ao validar token:', error);
+        return await res.json();
+    } catch {
         return { authenticated: false };
     }
 }
 
+// Redireciona para /login se o usuário não estiver autenticado
+// Use em páginas que exigem login
 async function protegerPagina() {
     const status = await getAuthStatus();
     if (!status.authenticated) {
-        window.location.href = "/login";
+        window.location.href = '/login';
     }
 }
 
+// Redireciona para /home se o usuário JÁ estiver autenticado
+// Use nas páginas de login e cadastro (para não mostrar o form para quem já logou)
 async function redirecionarSeLogado() {
     const status = await getAuthStatus();
     if (status.authenticated) {
-        window.location.href = "/home";
+        window.location.href = '/home';
     }
 }
 
+// Apaga os dados de sessão e redireciona para login
 function logout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("usuario");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("usuario");
-    window.location.href = "/login";
+    localStorage.removeItem('token');
+    localStorage.removeItem('usuario');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('usuario');
+    window.location.href = '/login';
 }
 
+// ============================================================
+// FORMULÁRIO DE CONTATO (página /contato)
+// ============================================================
+
+// Este listener só dispara se existir um botão com id="btnSend" na página
+const btnSend = document.getElementById('btnSend');
+
+btnSend?.addEventListener('click', async () => {
+    const nome     = document.getElementById('nome')?.value?.trim();
+    const email    = document.getElementById('email')?.value?.trim();
+    const telefone = document.getElementById('telefone')?.value?.trim();
+    const servico  = document.getElementById('servico')?.value;
+    const mensagem = document.getElementById('mensagem')?.value?.trim();
+
+    if (!nome || !email || !mensagem) {
+        showMessage('Preencha os campos obrigatórios.', 'error');
+        return;
+    }
+
+    btnSend.disabled = true;
+    btnSend.textContent = 'Enviando...';
+
+    try {
+        const res  = await fetch(`${API_BASE_URL}/api/pedidos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nome, email, telefone, servico, mensagem })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            document.getElementById('formWrap')?.style.setProperty('display', 'none');
+            document.getElementById('formSuccess')?.style.setProperty('display', 'block');
+            showMessage('Pedido enviado com sucesso!', 'success');
+        } else {
+            showMessage(data.error || 'Erro ao enviar.', 'error');
+        }
+    } catch {
+        showMessage('Não foi possível conectar ao servidor.', 'error');
+    } finally {
+        btnSend.disabled = false;
+        btnSend.textContent = 'Enviar Pedido';
+    }
+});
+
+// ============================================================
+// UTILITÁRIOS DE UI
+// ============================================================
+
+// Exibe uma mensagem de feedback para o usuário
+// type: 'success' | 'error'
 function showMessage(message, type) {
-    const messageDiv = document.getElementById("message");
-    if (messageDiv) {
-        messageDiv.innerHTML = `<p class="${type}-msg">${message}</p>`;
-        setTimeout(() => {
-            messageDiv.innerHTML = "";
-        }, 5000);
+    const el = document.getElementById('message');
+    if (el) {
+        el.innerHTML = `<p class="${type}-msg">${message}</p>`;
+        setTimeout(() => { el.innerHTML = ''; }, 5000);
     } else {
         alert(message);
     }
 }
 
-function initMobileNav() {
-    const nav = document.querySelector('nav#navbar, nav.navbar');
-    const links = nav?.querySelector('.nav-links, .nav-right');
-    if (!nav || !links) return;
+// Atualiza o menu de navegação conforme o estado de autenticação
+async function atualizarMenu() {
+    const token      = getToken();
+    const navAuthItem = document.getElementById('navAuthItem');
+    const logoutBtn   = document.getElementById('logoutBtn');
 
-    if (!nav.querySelector('.nav-toggle')) {
-        const toggle = document.createElement('button');
-        toggle.type = 'button';
-        toggle.className = 'nav-toggle';
-        toggle.setAttribute('aria-label', 'Abrir menu');
-
-        const bar = document.createElement('span');
-        toggle.appendChild(bar);
-        nav.appendChild(toggle);
-
-        toggle.addEventListener('click', () => {
-            nav.classList.toggle('nav-open');
-        });
-
-        links.querySelectorAll('a, button').forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 900) {
-                    nav.classList.remove('nav-open');
-                }
-            });
-        });
+    if (token) {
+        // Usuário logado: mostra botão de sair, esconde links de entrar/cadastrar
+        if (logoutBtn)   logoutBtn.style.display = 'inline-block';
+        if (navAuthItem) navAuthItem.innerHTML = '';
+    } else {
+        // Usuário não logado: esconde botão de sair, mostra links de entrar/cadastrar
+        if (logoutBtn)   logoutBtn.style.display = 'none';
+        if (navAuthItem) navAuthItem.innerHTML = `
+            <a href="/login">Entrar</a>
+            <span style="margin:0 .35rem;color:rgba(255,255,255,.5)">|</span>
+            <a href="/cadastro">Cadastrar</a>
+        `;
     }
+}
+
+// Inicializa o menu hamburguer para mobile
+function initMobileNav() {
+    const nav   = document.querySelector('nav#navbar');
+    const links = nav?.querySelector('.nav-links');
+    if (!nav || !links || nav.querySelector('.nav-toggle')) return;
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'nav-toggle';
+    toggle.setAttribute('aria-label', 'Abrir menu');
+    toggle.appendChild(document.createElement('span'));
+    nav.appendChild(toggle);
+
+    toggle.addEventListener('click', () => nav.classList.toggle('nav-open'));
+
+    links.querySelectorAll('a, button').forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 900) nav.classList.remove('nav-open');
+        });
+    });
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 900) {
-            nav.classList.remove('nav-open');
-        }
+        if (window.innerWidth > 900) nav.classList.remove('nav-open');
     });
 }
 
-function protegerConteudo() {
-    // Desativa seleção de texto apenas em elementos não-interativos
+// Proteção básica de conteúdo (bloqueia Ctrl+U e F12 fora de campos de formulário)
+function initProtecaoConteudo() {
+    // Desativa seleção de texto no body, mas permite dentro de inputs e textareas
     const style = document.createElement('style');
     style.textContent = `
         body { user-select: none; -webkit-user-select: none; }
-        input, textarea, select, [contenteditable] {
-            user-select: text !important;
-            -webkit-user-select: text !important;
-        }
+        input, textarea, select { user-select: text !important; -webkit-user-select: text !important; }
     `;
     document.head.appendChild(style);
 
-    // Bloqueia Ctrl+U (view-source) e F12 fora de campos de formulário
-    document.addEventListener('keydown', (event) => {
-        const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-        const isFormField = ['input', 'textarea', 'select'].includes(tag);
-        if (isFormField) return; // permite tudo dentro de formulários
+    document.addEventListener('keydown', (e) => {
+        const tag = document.activeElement?.tagName?.toLowerCase();
+        if (['input', 'textarea', 'select'].includes(tag)) return; // não bloqueia dentro de formulários
 
-        const key = event.key.toLowerCase();
-        if (
-            (event.ctrlKey && key === 'u') ||
-            event.key === 'F12' ||
-            (event.ctrlKey && event.shiftKey && ['i', 'j'].includes(key))
-        ) {
-            event.preventDefault();
+        const k = e.key;
+        if ((e.ctrlKey && k === 'u') || k === 'F12' || (e.ctrlKey && e.shiftKey && ['i', 'j'].includes(k.toLowerCase()))) {
+            e.preventDefault();
         }
     });
 }
 
-async function atualizarMenuAutenticacao() {
-    const token = getToken();
-    const navAuthItem = document.getElementById("navAuthItem");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (token) {
-        if (logoutBtn) {
-            logoutBtn.style.display = "inline-block";
-            logoutBtn.textContent = "Sair";
-        }
-        if (navAuthItem) {
-            navAuthItem.innerHTML = "";
-        }
-    } else {
-        if (logoutBtn) {
-            logoutBtn.style.display = "none";
-        }
-        if (navAuthItem) {
-            navAuthItem.innerHTML = `
-                <a href="/login">Entrar</a>
-                <span style="margin: 0 .35rem; color: rgba(255,255,255,.5);">|</span>
-                <a href="/cadastro">Cadastrar</a>
-            `;
-        }
-    }
-}
+// ============================================================
+// INICIALIZAÇÃO (executado quando o DOM estiver pronto)
+// ============================================================
 
 window.addEventListener('DOMContentLoaded', () => {
-    const logoutBtn = document.getElementById("logoutBtn");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", logout);
-    }
+    // Conecta o botão de logout ao handler de logout
+    document.getElementById('logoutBtn')?.addEventListener('click', logout);
 
-    atualizarMenuAutenticacao();
+    atualizarMenu();
     initMobileNav();
-    protegerConteudo();
+    initProtecaoConteudo();
 });

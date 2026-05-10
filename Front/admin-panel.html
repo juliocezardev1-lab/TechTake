@@ -577,7 +577,11 @@
     <script>
         let currentPacoteId = null;
         let currentDroneId = null;
-        const API_URL = (window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://SEU-BACKEND.onrender.com') + '/api'; // ← mesmo valor de PROD_API_BASE_URL no config.js
+        // Mesma lógica do config.js: localhost em dev, Render em produção
+        // ⚠️ Substitua pela URL real do seu Render
+        const API_URL = (window.location.hostname === 'localhost'
+            ? 'http://localhost:3000'
+            : 'https://SEU-BACKEND.onrender.com') + '/api';
 
         // ========================================
         // FUNÇÕES DE ABAS
@@ -927,7 +931,7 @@
                 const tbody = document.getElementById('pedidosBody');
                 tbody.innerHTML = '';
 
-                const rows = Array.isArray(data) ? data : [];
+                const rows = data.pedidos || [];
                 if (rows.length > 0) {
                     rows.forEach(p => {
                         const tr = document.createElement('tr');
