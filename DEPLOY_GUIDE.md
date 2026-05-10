@@ -72,7 +72,7 @@ Substitua da mesma forma.
 
 Localize:
 ```js
-: 'https://SEU-BACKEND.onrender.com') + '/api';
+: 'https://SEU-BACKEND.onrender.com' + '/api';
 ```
 Substitua da mesma forma.
 

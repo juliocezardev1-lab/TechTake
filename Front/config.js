@@ -14,7 +14,7 @@
 //
 const API_BASE_URL = window.location.hostname === 'localhost'
     ? 'http://localhost:3000'           // desenvolvimento local
-    : 'https://SEU-BACKEND.onrender.com'; // ← SUBSTITUA AQUI
+    : 'https://techtake-site.onrender.com'; // ← SUBSTITUA AQUI
 
 // ============================================================
 // AUTENTICAÇÃO
@@ -82,10 +82,10 @@ function logout() {
 const btnSend = document.getElementById('btnSend');
 
 btnSend?.addEventListener('click', async () => {
-    const nome     = document.getElementById('nome')?.value?.trim();
-    const email    = document.getElementById('email')?.value?.trim();
+    const nome = document.getElementById('nome')?.value?.trim();
+    const email = document.getElementById('email')?.value?.trim();
     const telefone = document.getElementById('telefone')?.value?.trim();
-    const servico  = document.getElementById('servico')?.value;
+    const servico = document.getElementById('servico')?.value;
     const mensagem = document.getElementById('mensagem')?.value?.trim();
 
     if (!nome || !email || !mensagem) {
@@ -97,7 +97,7 @@ btnSend?.addEventListener('click', async () => {
     btnSend.textContent = 'Enviando...';
 
     try {
-        const res  = await fetch(`${API_BASE_URL}/api/pedidos`, {
+        const res = await fetch(`${API_BASE_URL}/api/pedidos`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome, email, telefone, servico, mensagem })
@@ -137,17 +137,17 @@ function showMessage(message, type) {
 
 // Atualiza o menu de navegação conforme o estado de autenticação
 async function atualizarMenu() {
-    const token      = getToken();
+    const token = getToken();
     const navAuthItem = document.getElementById('navAuthItem');
-    const logoutBtn   = document.getElementById('logoutBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
 
     if (token) {
         // Usuário logado: mostra botão de sair, esconde links de entrar/cadastrar
-        if (logoutBtn)   logoutBtn.style.display = 'inline-block';
+        if (logoutBtn) logoutBtn.style.display = 'inline-block';
         if (navAuthItem) navAuthItem.innerHTML = '';
     } else {
         // Usuário não logado: esconde botão de sair, mostra links de entrar/cadastrar
-        if (logoutBtn)   logoutBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'none';
         if (navAuthItem) navAuthItem.innerHTML = `
             <a href="/login">Entrar</a>
             <span style="margin:0 .35rem;color:rgba(255,255,255,.5)">|</span>
@@ -158,7 +158,7 @@ async function atualizarMenu() {
 
 // Inicializa o menu hamburguer para mobile
 function initMobileNav() {
-    const nav   = document.querySelector('nav#navbar');
+    const nav = document.querySelector('nav#navbar');
     const links = nav?.querySelector('.nav-links');
     if (!nav || !links || nav.querySelector('.nav-toggle')) return;
 
