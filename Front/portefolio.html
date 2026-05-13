@@ -451,6 +451,7 @@
                     style="display: none; background: none; border: none; color: var(--clr-text); cursor: pointer; font-family: var(--font-body); padding: 0.5rem 1rem;">Sair</button>
             </li>
         </ul>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false"><span></span></button>
     </nav>
 
     <!-- BANNER -->
@@ -637,6 +638,24 @@
         });
         document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
         lightbox.addEventListener('click', e => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+    </script>
+    <script>
+        /* ── Mobile nav toggle ── */
+        (function () {
+            var toggle = document.getElementById("navToggle");
+            var navbar = document.getElementById("navbar");
+            if (!toggle || !navbar) return;
+            toggle.addEventListener("click", function () {
+                var open = navbar.classList.toggle("nav-open");
+                toggle.setAttribute("aria-expanded", open);
+            });
+            document.addEventListener("click", function (e) {
+                if (!navbar.contains(e.target)) {
+                    navbar.classList.remove("nav-open");
+                    toggle.setAttribute("aria-expanded", "false");
+                }
+            });
+        })();
     </script>
 </body>
 

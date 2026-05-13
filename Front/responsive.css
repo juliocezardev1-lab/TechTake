@@ -1,4 +1,8 @@
-/* Common mobile and responsive improvements for TechTake front-end */
+/* ================================================================
+   TECHTAKE — responsive.css
+   Melhorias mobile para todas as páginas
+   ================================================================ */
+
 :root {
     --responsive-breakpoint: 900px;
 }
@@ -27,6 +31,7 @@ body {
     min-height: 100vh;
 }
 
+/* ── NAV TOGGLE (hambúrguer) ── */
 nav {
     position: relative;
 }
@@ -42,6 +47,7 @@ nav {
     background: rgba(255, 255, 255, 0.05);
     color: var(--clr-text);
     cursor: pointer;
+    flex-shrink: 0;
     transition: background .25s ease, transform .25s ease;
 }
 
@@ -87,6 +93,9 @@ nav {
     transform: rotate(-45deg) translate(1px, -1px);
 }
 
+/* ================================================================
+   BREAKPOINT 900 px
+   ================================================================ */
 @media (max-width: 900px) {
     nav {
         padding: 0.9rem 1rem !important;
@@ -108,7 +117,7 @@ nav {
         right: 0;
         top: 100%;
         padding: 1rem 1.25rem 1.2rem;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         z-index: 20;
     }
 
@@ -149,6 +158,7 @@ nav {
         gap: 0 !important;
     }
 
+    /* ── Padding de seções ── */
     .section,
     .container,
     .page-hero,
@@ -162,7 +172,8 @@ nav {
     }
 
     .page-hero {
-        padding-bottom: 1.5rem !important;
+        padding: 0 1.25rem 2rem !important;
+        min-height: 48vh !important;
     }
 
     .page-hero-content,
@@ -170,6 +181,7 @@ nav {
         padding: 0 0.75rem !important;
     }
 
+    /* ── Tipografia ── */
     .page-hero .breadcrumb,
     .hero-sub,
     .section-label,
@@ -190,29 +202,59 @@ nav {
         font-size: clamp(2rem, 6vw, 3.4rem) !important;
     }
 
-    .services-grid,
-    .portfolio-grid,
-    .stats-inner,
-    .package-card,
-    .form-row,
-    .manifesto,
-    .contact-layout {
+    /* ── Grids ── */
+    .services-grid {
+        grid-template-columns: 1fr 1fr !important;
         gap: 1rem !important;
     }
 
     .portfolio-grid {
-        grid-template-columns: 1fr !important;
-        grid-auto-rows: auto !important;
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-rows: repeat(3, 180px) !important;
+        gap: 8px !important;
     }
 
-    .portfolio-item,
-    .pf-item,
-    .service-card,
-    .package-card,
-    .value-card {
+    .portfolio-item {
+        grid-column: auto !important;
+        grid-row: auto !important;
         min-width: 0 !important;
     }
 
+    .packages-grid {
+        gap: 1rem !important;
+    }
+
+    /* ── About (home.html) ── */
+    #about {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+        padding: 4rem 1.25rem !important;
+    }
+
+    .about-accent {
+        display: none;
+    }
+
+    /* ── Contact layout ── */
+    .contact-layout {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem !important;
+        padding: 4rem 1.25rem !important;
+    }
+
+    .contact-info {
+        padding-right: 0 !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--clr-border);
+        padding-bottom: 2.5rem !important;
+    }
+
+    .contact-form {
+        padding-left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* ── Stats ── */
     .stats {
         flex-wrap: wrap !important;
         gap: 1rem !important;
@@ -222,14 +264,7 @@ nav {
         flex: 1 1 45% !important;
     }
 
-    .page-hero,
-    .portfolio-wrap,
-    .contact-layout,
-    .section,
-    .container {
-        width: 100% !important;
-    }
-
+    /* ── Misc ── */
     .package-card,
     .contact-form,
     .about-visual,
@@ -238,7 +273,6 @@ nav {
     }
 
     .package-body,
-    .contact-info,
     .contact-form,
     .about-text,
     .manifesto-text {
@@ -247,9 +281,25 @@ nav {
 
     .form-row {
         grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* ── Sobre: manifesto / equipe ── */
+    .manifesto {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+
+    .values-grid,
+    .team-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1rem !important;
     }
 }
 
+/* ================================================================
+   BREAKPOINT 640 px
+   ================================================================ */
 @media (max-width: 640px) {
     .nav-toggle {
         width: 40px;
@@ -260,6 +310,7 @@ nav {
         padding: 1rem 1rem 1.2rem;
     }
 
+    /* ── Tipografia ainda menor ── */
     .section-title,
     .page-hero-content h1,
     .hero-title,
@@ -276,6 +327,22 @@ nav {
         padding: 0 0.5rem !important;
     }
 
+    /* ── Grids coluna única ── */
+    .services-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .values-grid,
+    .team-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: repeat(6, 200px) !important;
+    }
+
+    /* ── Forms e auth ── */
     .auth-container,
     .auth-card,
     .container,
@@ -340,6 +407,7 @@ nav {
         line-height: 1.5 !important;
     }
 
+    /* ── Tabelas admin ── */
     .table {
         display: block !important;
         overflow-x: auto !important;
@@ -368,5 +436,22 @@ nav {
 
     .tab-btn {
         flex: 1 1 100% !important;
+    }
+
+    /* ── Botões de contato ── */
+    .contact-links {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .contact-chip {
+        text-align: center !important;
+    }
+
+    /* ── Hero CTA ── */
+    .btn-primary {
+        display: block !important;
+        text-align: center !important;
+        padding: 1rem 1.5rem !important;
     }
 }
