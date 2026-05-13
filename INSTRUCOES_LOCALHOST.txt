@@ -1,0 +1,110 @@
+================================================================
+  TECHTAKE — INSTRUÇÕES: LOCALHOST vs PRODUÇÃO (Netlify + Render)
+================================================================
+
+O projeto está configurado por padrão para rodar em LOCALHOST.
+Siga os passos abaixo para alternar entre os dois modos.
+
+----------------------------------------------------------------
+  COMO RODAR EM LOCALHOST (modo atual — padrão)
+----------------------------------------------------------------
+
+1. Instale as dependências do backend (só precisa fazer uma vez):
+      cd Back
+      npm install
+
+2. Inicie o servidor:
+      npm run dev      ← recomendado (reinicia automaticamente ao salvar)
+   ou
+      npm start        ← versão simples sem hot-reload
+
+3. Acesse no navegador:
+      http://localhost:3000
+
+Pronto! O backend serve o frontend automaticamente nesse modo.
+Não é necessário abrir os arquivos HTML diretamente.
+
+----------------------------------------------------------------
+  ARQUIVOS E LINHAS A VERIFICAR ANTES DE SUBIR PARA PRODUÇÃO
+----------------------------------------------------------------
+
+Ao fazer deploy no Netlify + Render, verifique estes 2 arquivos:
+
+────────────────────────────────────────────────────
+ARQUIVO 1: Back/.env
+────────────────────────────────────────────────────
+
+  LOCALHOST (padrão):
+    Linha 11 → NODE_ENV=development        ← deve estar ATIVA (sem #)
+    Linha 13 → # NODE_ENV=production       ← deve estar COMENTADA (com #)
+    Linha 20 → # FRONTEND_ORIGIN=...       ← deve estar COMENTADA (com #)
+
+  PRODUÇÃO (Netlify + Render):
+    Linha 11 → # NODE_ENV=development      ← COMENTAR (adicionar # na frente)
+    Linha 13 → NODE_ENV=production         ← DESCOMENTAR (remover o #)
+    Linha 20 → FRONTEND_ORIGIN=https://seu-site.netlify.app
+               ← DESCOMENTAR e substituir pela URL real do seu Netlify
+
+
+────────────────────────────────────────────────────
+ARQUIVO 2: Front/config.js
+────────────────────────────────────────────────────
+
+  LOCALHOST (padrão — detecção automática):
+    Linha 15 → const API_BASE_URL = window.location.hostname === 'localhost'
+    Linha 16 →     ? 'http://localhost:3000'
+    Linha 17 →     : 'https://tech-take-com.onrender.com';
+               ← Essas 3 linhas devem estar ATIVAS (sem //)
+
+    Linha 24 → // const API_BASE_URL = 'https://tech-take-com.onrender.com';
+               ← Deve estar COMENTADA (com //)
+
+  PRODUÇÃO (Netlify + Render):
+    Linhas 15–17 → COMENTAR as 3 linhas (adicionar // na frente de cada uma)
+    Linha 24     → DESCOMENTAR (remover o //)
+                   e substituir pela URL real do backend no Render
+
+  ⚠️  No modo LOCALHOST, a detecção automática já funciona:
+      se você acessa via "localhost", usa o backend local.
+      O modo PRODUÇÃO força sempre a URL do Render, útil para testes.
+
+----------------------------------------------------------------
+  RESUMO RÁPIDO — CHECKLIST
+----------------------------------------------------------------
+
+  PARA LOCALHOST:
+    [ ] Back/.env linha 11: NODE_ENV=development  (sem #)
+    [ ] Back/.env linha 13: # NODE_ENV=production  (com #)
+    [ ] Front/config.js linhas 15–17: ATIVAS (sem //)
+    [ ] Front/config.js linha 24: COMENTADA (com //)
+    [ ] Rodar: cd Back && npm run dev
+
+  PARA PRODUÇÃO (Netlify + Render):
+    [ ] Back/.env linha 11: # NODE_ENV=development  (com #)
+    [ ] Back/.env linha 13: NODE_ENV=production  (sem #)
+    [ ] Back/.env linha 20: FRONTEND_ORIGIN=https://seu-site.netlify.app
+    [ ] Front/config.js linhas 15–17: COMENTADAS (com //)
+    [ ] Front/config.js linha 24: DESCOMENTADA (sem //)
+                                  com a URL correta do Render
+    [ ] Fazer push para o GitHub (Netlify e Render fazem deploy automático)
+
+----------------------------------------------------------------
+  ESTRUTURA DO PROJETO
+----------------------------------------------------------------
+
+  TechTake-Site-responsive/
+  ├── Back/                    ← Backend Node.js/Express
+  │   ├── .env                 ← ⚠️ alterar para trocar de ambiente
+  │   ├── server.js            ← servidor principal
+  │   ├── routes/              ← rotas da API
+  │   ├── models/              ← banco de dados (SQLite)
+  │   └── middlewares/         ← autenticação e rate limit
+  ├── Front/                   ← Frontend HTML/CSS/JS
+  │   ├── config.js            ← ⚠️ alterar para trocar de ambiente
+  │   ├── *.html               ← páginas do site
+  │   └── responsive.css       ← estilos
+  ├── render.yaml              ← configuração de deploy no Render
+  ├── DEPLOY_GUIDE.md          ← guia completo de deploy online
+  └── INSTRUCOES_LOCALHOST.txt ← este arquivo
+
+================================================================

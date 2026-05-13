@@ -5,16 +5,24 @@
 
 // ── URL da API ───────────────────────────────────────────────
 //
-// Em desenvolvimento local:  frontend e backend rodam no mesmo localhost:3000
-// Em produção (Netlify):     o frontend está em outro domínio que não é o backend
+// MODO LOCALHOST vs PRODUÇÃO — leia o arquivo INSTRUCOES_LOCALHOST.txt
+// para saber exatamente o que comentar/descomentar ao trocar de ambiente.
 //
-// ⚠️  Quando fizer deploy, substitua a URL abaixo pela URL real do seu backend no Render.
-//     Exemplo: "https://techtake-api.onrender.com"
-//     Você encontra essa URL no painel do Render após o primeiro deploy.
-//
+// ──────────────────────────────────────────────────────────────
+// OPÇÃO A — LOCALHOST (padrão atual, para rodar localmente)
+// Detecção automática: usa localhost:3000 quando acessado via localhost,
+// e a URL do Render quando acessado de outro domínio.
+// ──────────────────────────────────────────────────────────────
 const API_BASE_URL = window.location.hostname === 'localhost'
-    ? 'http://localhost:3000'           // desenvolvimento local
-    : 'https://tech-take-com.onrender.com'; // URL do backend no Render
+    ? 'http://localhost:3000'                    // localhost → backend local
+    : 'https://tech-take-com.onrender.com';      // outro domínio → backend no Render (PRODUÇÃO)
+
+// ──────────────────────────────────────────────────────────────
+// OPÇÃO B — FORÇAR PRODUÇÃO (Netlify + Render)
+// Comente as 3 linhas da OPÇÃO A acima e descomente a linha abaixo.
+// Substitua pela URL real do seu backend no Render antes de fazer deploy.
+// ──────────────────────────────────────────────────────────────
+// const API_BASE_URL = 'https://tech-take-com.onrender.com';
 
 // ============================================================
 // AUTENTICAÇÃO
