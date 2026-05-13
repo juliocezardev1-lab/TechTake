@@ -108,3 +108,9 @@ ARQUIVO 2: Front/config.js
   └── INSTRUCOES_LOCALHOST.txt ← este arquivo
 
 ================================================================
+Para rodar em localhost, abra o arquivo Back/.env e certifique-se de que a linha 11 está
+ sem # na frente (NODE_ENV=development), a linha 13 está com # na frente (# NODE_ENV=production)
+  e a linha 20 está com # na frente (# FRONTEND_ORIGIN=https://seu-site.netlify.app).
+Depois abra o arquivo Front/config.js e certifique-se de que as linhas 15, 16 e 17 estão sem
+ // na frente (const API_BASE_URL = window.location.hostname === 'localhost', ? 'http://localhost:3000', : 'https://tech-take-com.onrender.com';) e a linha 24 está com // na frente (// const API_BASE_URL = 'https://tech-take-com.onrender.com';).
+Com isso feito, abra o terminal na pasta Back, rode npm install e depois npm run dev. Acesse http://localhost:3000 no navegador.
