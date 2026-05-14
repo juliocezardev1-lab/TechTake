@@ -7,6 +7,11 @@
     --responsive-breakpoint: 900px;
 }
 
+html,
+body {
+    min-height: 100%;
+}
+
 html {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -29,6 +34,30 @@ a {
 
 body {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body > footer {
+    margin-top: auto;
+}
+
+footer {
+    width: 100%;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    background: rgba(11, 14, 20, 0.95);
+    color: var(--clr-muted);
+}
+
+footer p {
+    margin: 0;
+    line-height: 1.65;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: underline;
 }
 
 /* ── NAV TOGGLE (hambúrguer) ── */
@@ -297,6 +326,41 @@ nav {
     }
 }
 
+@media (max-width: 1200px) {
+    .section,
+    .page-hero,
+    .portfolio-wrap,
+    .contact-layout,
+    .manifesto,
+    .about,
+    .stats-strip {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .section {
+        padding: 5.5rem 1.5rem 3rem !important;
+    }
+
+    .services-grid,
+    .portfolio-grid,
+    .values-grid,
+    .team-grid {
+        gap: 1.5rem !important;
+    }
+
+    .services-grid,
+    .values-grid,
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+        grid-auto-rows: auto !important;
+    }
+}
+
 /* ================================================================
    BREAKPOINT 640 px
    ================================================================ */
@@ -400,7 +464,7 @@ nav {
         min-height: 48px;
     }
 
-    .footer p,
+    footer p,
     .auth-footer,
     .message {
         font-size: 0.95rem !important;
