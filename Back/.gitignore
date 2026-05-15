@@ -1,0 +1,10 @@
+# Dependências — nunca sobe para o GitHub
+node_modules/
+
+# Variáveis de ambiente — contém segredos, nunca sobe para o GitHub
+.env
+
+# Banco de dados local — o Render gera o seu próprio via seed.js
+*.db
+*.db-shm
+*.db-wal

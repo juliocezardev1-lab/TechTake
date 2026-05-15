@@ -1,0 +1,521 @@
+/* ================================================================
+   TECHTAKE — responsive.css
+   Melhorias mobile para todas as páginas
+   ================================================================ */
+
+:root {
+    --responsive-breakpoint: 900px;
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+html {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+img,
+picture,
+svg,
+iframe,
+.video,
+object,
+embed {
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+a {
+    word-break: break-word;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body > footer {
+    margin-top: auto;
+}
+
+footer {
+    width: 100%;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    background: rgba(11, 14, 20, 0.95);
+    color: var(--clr-muted);
+}
+
+footer p {
+    margin: 0;
+    line-height: 1.65;
+}
+
+footer a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+/* ── NAV TOGGLE (hambúrguer) ── */
+nav {
+    position: relative;
+}
+
+.nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--clr-text);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .25s ease, transform .25s ease;
+}
+
+.nav-toggle:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 999px;
+    transition: transform .25s ease, opacity .25s ease;
+    position: relative;
+}
+
+.nav-toggle span::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 0;
+}
+
+.nav-toggle span::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+}
+
+.nav-open .nav-toggle span {
+    background: transparent;
+}
+
+.nav-open .nav-toggle span::before {
+    transform: rotate(45deg) translate(1px, 1px);
+}
+
+.nav-open .nav-toggle span::after {
+    transform: rotate(-45deg) translate(1px, -1px);
+}
+
+/* ================================================================
+   BREAKPOINT 900 px
+   ================================================================ */
+@media (max-width: 900px) {
+    nav {
+        padding: 0.9rem 1rem !important;
+    }
+
+    .nav-toggle {
+        display: flex !important;
+    }
+
+    .nav-links,
+    .nav-right {
+        display: none !important;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        background: rgba(11, 14, 20, 0.98);
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 100%;
+        padding: 1rem 1.25rem 1.2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        z-index: 20;
+    }
+
+    .nav-links li,
+    .nav-right {
+        width: 100%;
+    }
+
+    .nav-links a,
+    .nav-links button,
+    .nav-right a,
+    .nav-right button {
+        display: block;
+        width: 100%;
+        padding: 0.95rem 0;
+        color: var(--clr-text) !important;
+        transition: color .25s ease, background .25s ease;
+        border-radius: 0.75rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links button:hover,
+    .nav-links a.active,
+    .nav-right a:hover,
+    .nav-right button:hover,
+    .nav-right a.active {
+        color: var(--clr-accent1) !important;
+        background: rgba(0, 198, 255, 0.08);
+    }
+
+    .nav-open .nav-links,
+    .nav-open .nav-right {
+        display: flex !important;
+    }
+
+    .nav-open .nav-right {
+        flex-direction: column !important;
+        gap: 0 !important;
+    }
+
+    /* ── Padding de seções ── */
+    .section,
+    .container,
+    .page-hero,
+    .portfolio-wrap,
+    .contact-layout,
+    .manifesto,
+    .about,
+    .stats-strip {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+    }
+
+    .page-hero {
+        padding: 0 1.25rem 2rem !important;
+        min-height: 48vh !important;
+    }
+
+    .page-hero-content,
+    .hero-content {
+        padding: 0 0.75rem !important;
+    }
+
+    /* ── Tipografia ── */
+    .page-hero .breadcrumb,
+    .hero-sub,
+    .section-label,
+    .section-title,
+    .about-text h2,
+    .page-hero-content h1,
+    .hero-title,
+    h1,
+    h2,
+    h3 {
+        word-break: break-word;
+    }
+
+    .section-title,
+    .page-hero-content h1,
+    .hero-title,
+    .about-text h2 {
+        font-size: clamp(2rem, 6vw, 3.4rem) !important;
+    }
+
+    /* ── Grids ── */
+    .services-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1rem !important;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr 1fr !important;
+        grid-template-rows: repeat(3, 180px) !important;
+        gap: 8px !important;
+    }
+
+    .portfolio-item {
+        grid-column: auto !important;
+        grid-row: auto !important;
+        min-width: 0 !important;
+    }
+
+    .packages-grid {
+        gap: 1rem !important;
+    }
+
+    /* ── About (home.html) ── */
+    #about {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+        padding: 4rem 1.25rem !important;
+    }
+
+    .about-accent {
+        display: none;
+    }
+
+    /* ── Contact layout ── */
+    .contact-layout {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem !important;
+        padding: 4rem 1.25rem !important;
+    }
+
+    .contact-info {
+        padding-right: 0 !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--clr-border);
+        padding-bottom: 2.5rem !important;
+    }
+
+    .contact-form {
+        padding-left: 0 !important;
+        width: 100% !important;
+    }
+
+    /* ── Stats ── */
+    .stats {
+        flex-wrap: wrap !important;
+        gap: 1rem !important;
+    }
+
+    .stats > div {
+        flex: 1 1 45% !important;
+    }
+
+    /* ── Misc ── */
+    .package-card,
+    .contact-form,
+    .about-visual,
+    .manifesto-visual {
+        width: 100% !important;
+    }
+
+    .package-body,
+    .contact-form,
+    .about-text,
+    .manifesto-text {
+        padding: 1rem !important;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+
+    /* ── Sobre: manifesto / equipe ── */
+    .manifesto {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+
+    .values-grid,
+    .team-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 1rem !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .section,
+    .page-hero,
+    .portfolio-wrap,
+    .contact-layout,
+    .manifesto,
+    .about,
+    .stats-strip {
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .section {
+        padding: 5.5rem 1.5rem 3rem !important;
+    }
+
+    .services-grid,
+    .portfolio-grid,
+    .values-grid,
+    .team-grid {
+        gap: 1.5rem !important;
+    }
+
+    .services-grid,
+    .values-grid,
+    .team-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+        grid-auto-rows: auto !important;
+    }
+}
+
+/* ================================================================
+   BREAKPOINT 640 px
+   ================================================================ */
+@media (max-width: 640px) {
+    .nav-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .nav-links {
+        padding: 1rem 1rem 1.2rem;
+    }
+
+    /* ── Tipografia ainda menor ── */
+    .section-title,
+    .page-hero-content h1,
+    .hero-title,
+    .about-text h2 {
+        font-size: clamp(1.9rem, 8vw, 2.8rem) !important;
+    }
+
+    .page-hero {
+        min-height: 52vh !important;
+    }
+
+    .page-hero-content,
+    .hero-content {
+        padding: 0 0.5rem !important;
+    }
+
+    /* ── Grids coluna única ── */
+    .services-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .values-grid,
+    .team-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: repeat(6, 200px) !important;
+    }
+
+    /* ── Forms e auth ── */
+    .auth-container,
+    .auth-card,
+    .container,
+    .modal-content,
+    .page-hero,
+    .contact-layout,
+    .about,
+    .portfolio-wrap,
+    .manifesto {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .auth-container,
+    .container {
+        padding: 1rem !important;
+    }
+
+    .auth-card,
+    .modal-content {
+        padding: 1.5rem !important;
+    }
+
+    .auth-card h1,
+    .logo-area h1,
+    .page-hero-content h1,
+    .section-title,
+    .hero-title,
+    .about-text h2 {
+        font-size: clamp(1.6rem, 7vw, 2.4rem) !important;
+    }
+
+    .auth-subtitle,
+    .auth-footer,
+    .form-group label,
+    .nav-menu a,
+    .btn-login,
+    .auth-btn,
+    .btn-add,
+    .btn-save,
+    .btn-cancel,
+    .btn-logout {
+        width: 100% !important;
+    }
+
+    .input-group input,
+    .form-group input,
+    .form-group textarea,
+    .auth-btn,
+    .btn-login,
+    .btn-add,
+    .btn-save,
+    .btn-cancel {
+        font-size: 1rem !important;
+        min-height: 48px;
+    }
+
+    footer p,
+    .auth-footer,
+    .message {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+    }
+
+    /* ── Tabelas admin ── */
+    .table {
+        display: block !important;
+        overflow-x: auto !important;
+        min-width: 320px;
+    }
+
+    .table th,
+    .table td {
+        padding: 10px !important;
+    }
+
+    .header {
+        padding: 15px 12px !important;
+    }
+
+    .header h1 {
+        font-size: 20px !important;
+    }
+
+    .header-right,
+    .nav-menu {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    .tab-btn {
+        flex: 1 1 100% !important;
+    }
+
+    /* ── Botões de contato ── */
+    .contact-links {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .contact-chip {
+        text-align: center !important;
+    }
+
+    /* ── Hero CTA ── */
+    .btn-primary {
+        display: block !important;
+        text-align: center !important;
+        padding: 1rem 1.5rem !important;
+    }
+}
