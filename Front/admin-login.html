@@ -107,63 +107,51 @@
         }
 
         .password-field {
-            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .password-field label {
+            display: block;
+            color: #333;
+            font-weight: 600;
         }
 
         .password-field input {
-            padding-right: 55px;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            margin-top: 8px;
         }
 
-        .toggle-password {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translateY(-50%);
+        .password-field input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.1);
+        }
 
-            width: 38px;
-            height: 38px;
-
+        .toggle-password-link {
+            background: none;
             border: none;
-            background: transparent;
-            border-radius: 10px;
-
+            color: #667eea;
             cursor: pointer;
-
+            padding: 4px 8px;
+            text-decoration: none;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            color: #666;
-
-            transition:
-                background 0.25s ease,
-                color 0.25s ease,
-                transform 0.25s ease;
         }
 
-        .toggle-password:hover {
-            background: rgba(102, 126, 234, 0.08);
-            color: #667eea;
+        .toggle-password-link:hover {
+            color: #764ba2;
+            transform: scale(1.15);
         }
 
-        .toggle-password:active {
-            transform: translateY(-50%) scale(0.92);
-        }
-
-        .toggle-password svg {
-            width: 20px;
-            height: 20px;
-
-            transition:
-                opacity 0.25s ease,
-                transform 0.25s ease;
-
-            opacity: 1;
-        }
-
-        .toggle-password.animating svg {
-            opacity: 0;
-            transform: rotate(90deg) scale(0.7);
+        .toggle-password-link:active {
+            transform: scale(0.95);
         }
 
         .btn-login {
@@ -254,6 +242,7 @@
 </head>
 
 <body>
+    <script src="config.js"></script>
 
     <div class="container">
 
@@ -275,13 +264,17 @@
 
             <div class="form-group password-field">
 
-                <label for="senha">Senha</label>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label for="senha">Senha</label>
+                    <button type="button" class="toggle-password-link" id="togglePassword" aria-label="Mostrar senha">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
 
                 <input type="password" id="senha" name="senha" required placeholder="Digite sua senha">
-
-                <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar senha">
-                    <i data-lucide="eye-off"></i>
-                </button>
 
             </div>
 
@@ -305,18 +298,29 @@
 
     <script type="module">
 
-        import {
-            createIcons,
-            eye,
-            eyeOff
-        } from 'https://cdn.jsdelivr.net/npm/lucide@latest/+esm';
+        const togglePassword = document.getElementById('togglePassword');
+        const senha = document.getElementById('senha');
 
-        createIcons({
-            icons: {
-                eye,
-                eyeOff
+        let visible = false;
+
+        togglePassword.addEventListener('click', (e) => {
+            e.preventDefault();
+            visible = !visible;
+            senha.type = visible ? 'text' : 'password';
+
+            const svg = togglePassword.querySelector('svg');
+            if (visible) {
+                svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle><line x1="4" y1="4" x2="20" y2="20" stroke="currentColor" stroke-width="2"></line>';
+                togglePassword.setAttribute('aria-label', 'Ocultar senha');
+            } else {
+                svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+                togglePassword.setAttribute('aria-label', 'Mostrar senha');
             }
         });
+
+    </script>
+
+    <script>
 
         const form = document.getElementById('loginForm');
         const email = document.getElementById('email');
@@ -328,47 +332,6 @@
         const btnLogin = document.getElementById('btnLogin');
         const btnText = document.getElementById('btnText');
         const loading = document.getElementById('loading');
-
-        const togglePassword =
-            document.getElementById('togglePassword');
-
-        let visible = false;
-
-        togglePassword.addEventListener('click', () => {
-
-            togglePassword.classList.add('animating');
-
-            setTimeout(() => {
-
-                visible = !visible;
-
-                senha.type =
-                    visible ? 'text' : 'password';
-
-                togglePassword.innerHTML =
-                    visible
-                        ? '<i data-lucide="eye"></i>'
-                        : '<i data-lucide="eye-off"></i>';
-
-                createIcons({
-                    icons: {
-                        eye,
-                        eyeOff
-                    }
-                });
-
-                togglePassword.setAttribute(
-                    'aria-label',
-                    visible
-                        ? 'Ocultar senha'
-                        : 'Mostrar senha'
-                );
-
-                togglePassword.classList.remove('animating');
-
-            }, 120);
-
-        });
 
         form.addEventListener('submit', async (e) => {
 
@@ -384,10 +347,8 @@
 
             try {
 
-                const API_BASE = 'http://localhost:3000';
-
                 const response =
-                    await fetch(`${API_BASE}/api/admin/login`, {
+                    await fetch(`${API_BASE_URL}/api/admin/login`, {
 
                         method: 'POST',
 
@@ -428,7 +389,7 @@
                 else {
 
                     errorMsg.textContent =
-                        data.message || 'Erro ao fazer login';
+                        data.error || 'Erro ao fazer login';
 
                     errorMsg.style.display = 'block';
 
