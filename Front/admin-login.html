@@ -238,11 +238,12 @@
             loading.style.display = 'block';
 
             try {
-                // Mesma lógica do config.js: localhost em dev, Render em produção
-                // ⚠️ Substitua pela URL real do seu Render
-                const API_BASE = window.location.hostname === 'localhost'
-                    ? 'http://localhost:3000'
-                    : 'https://tech-take-com.onrender.com';
+                // Usa a origem atual para o backend local sempre que a página for servida por localhost.
+                // Se a página estiver sendo aberta diretamente pelo sistema de arquivos,
+                // usa fallback para o backend local em http://localhost:3000.
+                const API_BASE = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+                    ? window.location.origin
+                    : 'http://localhost:3000';
                 const response = await fetch(`${API_BASE}/api/admin/login`, {
                     method: 'POST',
                     headers: {
