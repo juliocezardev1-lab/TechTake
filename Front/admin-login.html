@@ -99,6 +99,31 @@
             box-shadow: 0 0 5px rgba(102, 126, 234, 0.1);
         }
 
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 50px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #667eea;
+            font-size: 16px;
+            padding: 0;
+        }
+
+        .toggle-password:focus {
+            outline: none;
+        }
+
         .btn-login {
             width: 100%;
             padding: 12px;
@@ -200,9 +225,10 @@
                 <input type="email" id="email" name="email" required placeholder="admin@buxaaudiovisual.com">
             </div>
 
-            <div class="form-group">
+            <div class="form-group password-field">
                 <label for="senha">Senha</label>
                 <input type="password" id="senha" name="senha" required placeholder="Digite sua senha">
+                <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar senha">👁️</button>
             </div>
 
             <button type="submit" class="btn-login" id="btnLogin">
@@ -238,12 +264,8 @@
             loading.style.display = 'block';
 
             try {
-                // Usa a origem atual para o backend local sempre que a página for servida por localhost.
-                // Se a página estiver sendo aberta diretamente pelo sistema de arquivos,
-                // usa fallback para o backend local em http://localhost:3000.
-                const API_BASE = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
-                    ? window.location.origin
-                    : 'http://localhost:3000';
+                // Força o backend local em desenvolvimento para evitar problemas de origem.
+                const API_BASE = 'http://localhost:3000';
                 const response = await fetch(`${API_BASE}/api/admin/login`, {
                     method: 'POST',
                     headers: {
@@ -282,6 +304,16 @@
         });
 
         // Verificar se já está logado
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword.addEventListener('click', () => {
+            const senhaInput = document.getElementById('senha');
+            const isPassword = senhaInput.type === 'password';
+            senhaInput.type = isPassword ? 'text' : 'password';
+            togglePassword.textContent = isPassword ? '🙈' : '👁️';
+            togglePassword.setAttribute('aria-label', isPassword ? 'Ocultar senha' : 'Mostrar senha');
+        });
+
         window.addEventListener('load', () => {
             const token = localStorage.getItem('adminToken');
             if (token) {
